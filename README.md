@@ -1,7 +1,7 @@
 RoboSail Project
 =========
 
-This project is an ongoing project under Bosotn Community Boating, [CBI] (http://www.community-boating.org), Junior program. For more information check [this] (http://www.community-boating.org/wp-content/uploads/2014/02/RoboSail-Program-Fall-2014.pdf) out!
+This project is an ongoing project under Bosotn Community Boating, [CBI] (http://www.community-boating.org), Junior program. For more information [check this out] (http://www.community-boating.org/wp-content/uploads/2014/02/RoboSail-Program-Fall-2014.pdf)!
 
 ## documents folder
 
