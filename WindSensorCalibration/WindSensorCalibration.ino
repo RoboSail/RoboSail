@@ -23,7 +23,7 @@ void loop() {
   
   // print out the reading
   Serial.print("Reading from sensor: "); Serial.print(duration); Serial.print("  |  ");
-  heading = (360 - map(duration, 0, 1010, 0, 360))-180;  //convert to heading in degrees
+  heading = map(duration, 0, 1010, 180, -180);  //convert to heading in degrees (simplified)
   Serial.print("Wind direction: ");
   Serial.println(heading);
   delay(500);        // delay in between reads for stability
