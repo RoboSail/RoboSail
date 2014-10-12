@@ -2,6 +2,11 @@
 
 #define RAD_CONV 57.2957 // 180/Pi, to convert radians to degrees
 
+float Orientation::hardiron_x, Orientation::hardiron_y, Orientation::hardiron_z;
+float Orientation::declination;
+Adafruit_LSM303_Accel_Unified * Orientation::accl;
+Adafruit_LSM303_Mag_Unified * Orientation::magn;
+
 /** Use an eCompass algorithm to calculate orientation
  * 
  * The algorithm is based on http://cache.freescale.com/files/sensors/doc/app_note/AN4248.pdf
@@ -21,9 +26,7 @@
  * @param pitch The result pitch in degrees
  * @param yaw The result yaw in degrees
  */
-void Orientation::calculate(Adafruit_LSM303_Accel_Unified * accl, Adafruit_LSM303_Mag_Unified * magn,
-                 float hardiron_x, float hardiron_y, float hardiron_z,
-                 float & roll, float & pitch, float & yaw){
+void Orientation::calculate(float & roll, float & pitch, float & yaw, float & heading){
   
   // Get a new sensor event
   sensors_event_t event_accl; 
@@ -39,9 +42,9 @@ void Orientation::calculate(Adafruit_LSM303_Accel_Unified * accl, Adafruit_LSM30
 
   // Signs should be choosen so that, when the axis is down, the value is + positive.
   // But that doesn't seem to work ?...
-  float magn_x = event_magn.magnetic.x + hardiron_x;
-  float magn_y = -event_magn.magnetic.y + hardiron_y;
-  float magn_z = -event_magn.magnetic.z + hardiron_z;  
+  float magn_x = event_magn.magnetic.x - hardiron_x;
+  float magn_y = -event_magn.magnetic.y - hardiron_y;
+  float magn_z = -event_magn.magnetic.z - hardiron_z;  
   
   // Freescale solution
   roll = atan2(accl_y, accl_z);
@@ -55,6 +58,8 @@ void Orientation::calculate(Adafruit_LSM303_Accel_Unified * accl, Adafruit_LSM30
   roll = roll * RAD_CONV;
   pitch = pitch * RAD_CONV;
   yaw = yaw * RAD_CONV;
+  
+  heading = yawToHeading(yaw);
 }
 
 /** Convert a yaw (-180 to 180) to a compass heading (0 to 360) with declination correction
@@ -63,10 +68,23 @@ void Orientation::calculate(Adafruit_LSM303_Accel_Unified * accl, Adafruit_LSM30
  * @param declination the magnetic declination to adjust against, with sign. Note that this is time and location dependent.
  * @return the corrected heading, in degrees 0 to 360
  */
-float Orientation::yawToHeading(float yaw, float declination){
-  float heading = yaw;
-  if(yaw < 0.0){
-    heading = 360.0 + yaw; // This is really a subtraction, since yaw is negative at this point
-  }
-  return heading + declination;
+float Orientation::yawToHeading(float yaw){
+    float heading = yaw + declination;
+    if (heading < 0.0){
+        heading += 360.0;
+    }
+    return heading;
+}
+
+
+void Orientation::setParameters(
+    Adafruit_LSM303_Accel_Unified * new_accl, Adafruit_LSM303_Mag_Unified * new_magn,
+    float new_declination,
+    float new_hardiron_x, float new_hardiron_y, float new_hardiron_z){
+    accl = new_accl;
+    magn = new_magn;
+    declination = new_declination;
+    hardiron_x = new_hardiron_x;
+    hardiron_y = new_hardiron_y;
+    hardiron_z = new_hardiron_z;
 }
