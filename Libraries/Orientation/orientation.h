@@ -3,8 +3,16 @@
 
 class Orientation {
  public:
-  static void calculate(Adafruit_LSM303_Accel_Unified * accl, Adafruit_LSM303_Mag_Unified * magn,
-                 float hardiron_x, float hardiron_y, float hardiron_z,
-                 float & roll, float & pitch, float & yaw);
-  static float yawToHeading(float yaw, float declination);
+  static void calculate(float & roll, float & pitch, float & yaw, float & heading);
+  static float yawToHeading(float yaw);
+
+  static void setParameters(
+            Adafruit_LSM303_Accel_Unified * accl, Adafruit_LSM303_Mag_Unified * magn,
+            float declination,
+            float hardiron_x, float hardiron_y, float hardiron_z);
+
+  static Adafruit_LSM303_Accel_Unified * accl;
+  static Adafruit_LSM303_Mag_Unified * magn;
+  static float declination;
+  static float hardiron_x, hardiron_y, hardiron_z;
 };
