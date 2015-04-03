@@ -1,7 +1,15 @@
 RoboSail Project
 =========
 
-This project is an ongoing project under Bosotn Community Boating, [CBI] (http://www.community-boating.org), Junior program. For more information [check this out] (http://www.community-boating.org/wp-content/uploads/2014/02/RoboSail-Program-Fall-2014.pdf)!
+This project is an ongoing project under Boston Community Boating, [CBI] (http://www.community-boating.org), Junior program. For more information check out [robosail.org] (http://www.robosail.org/)!
+
+
+
+## Contributing
+If you're a team, and you want to test out your own code, please make a fork of the project and add your code there.
+
+If you're just interested in contributing, please make your changes in a pull request for review.
+
 
 ## documents folder
 
