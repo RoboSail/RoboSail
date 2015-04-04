@@ -9,7 +9,7 @@ In 2014 we partnered with Boston's Community Boating, Inc. [CBI] (http://www.com
 
 For more information  (http://www.robosail.org/cbi-robosail-class.html) 
 
-# Instalation
+# Installation
 
 Comming Soon!
 
@@ -18,7 +18,7 @@ If you're a team, and you want to test out your own code, please make a fork of 
 
 If you're just interested in contributing, please make your changes in a pull request for review.
 
-# Folders
+# Folder Overview
 
 ## documents Folder
 
@@ -37,6 +37,20 @@ Templates to help teams get up and running quickly with a complete sailboat prog
 Contains all the library files needed. Libraries contain hardware-specific code provided by the component manufacturer.  Simple components like the wind direction encoder send a PWM signal, which Arduino is already capable of interpreting, so no additional library is necessary.  Both the Compass and GPS modules come with libraries from the manufacturer and have libraries created by the RoboSail team for ease of use.
 
 Make sure that all Libraries are in the Libraries folder in the Sketchbook location.   You can check/set this in the Arduino IDE preferences.
+
+# Pinout and Interrupts
+
+Pin | Assignment
+----|-------------------------
+2   | RC receiver sail
+3   | RC receiver rudder
+8   | Servo rudder
+9   | Servo sail
+
+Interrupt | Assignment
+----------|-------------------------
+0         | RC receiver pulse in sail
+1         | RC receiver pulse in rudder
 
 # New Hardware Setup
 

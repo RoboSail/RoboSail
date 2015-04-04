@@ -19,7 +19,7 @@ void loop() {
   int windPulseWidth = pulseIn(ROBOSAIL_PIN_WIND, HIGH, 25000);
   // Calculate the wind angle in degrees.
   int windAngle = map(rudderPulseWidth, 1, 1025, 0, 360);
-  
+
   // Print out the values for debug.
   Serial.print("pulse: ");
   Serial.print(windPulseWidth);
