@@ -27,7 +27,7 @@ void setup()
   while(Serial.available()==0) {} // Loop here until there is a character in the serial monitor
   int pos = Serial.parseInt();
   Serial.println(pos);
-
+pos = map(pos, -90, 90, 0, 180);
   rudderservo.write(pos);  // tell servo to go to position in variable 'pos' 
 
  } 
