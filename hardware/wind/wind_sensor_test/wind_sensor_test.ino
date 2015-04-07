@@ -4,7 +4,10 @@
 // to the serial console.
 
 // Pin assignments
-const int ROBOSAIL_PIN_WIND = 999; // TODO: Change this to match the correct I/O pin!
+const int ROBOSAIL_PIN_WIND = 7; 
+
+int windAngle = 0;
+int windPulseWidth = 0;
 
 void setup() {
   Serial.begin(9600);
@@ -16,9 +19,12 @@ void setup() {
 void loop() {
   // Read commanded (manual) values from the RC reciever
   // pulseIn returns the width of the command pulse in microseconds.
-  int windPulseWidth = pulseIn(ROBOSAIL_PIN_WIND, HIGH, 25000);
-  // Calculate the wind angle in degrees.
-  int windAngle = map(rudderPulseWidth, 1, 1025, 0, 360);
+  windPulseWidth = pulseIn(ROBOSAIL_PIN_WIND, HIGH, 25000);
+  
+  // Convert the wind angle to degrees from PWM.  Range -180 to +180
+  windAngle = map(windPulseWidth, 0, 1010, 180, -180);
+  
+  windAngle = constrain(windAngle, -180, 180);
 
   // Print out the values for debug.
   Serial.print("pulse: ");
@@ -29,6 +35,6 @@ void loop() {
   Serial.print("\n"); // Print a new line
 
   // add delay to not overwhelm serial monitor
-  delay(200);
+  delay(500);
 }
 
