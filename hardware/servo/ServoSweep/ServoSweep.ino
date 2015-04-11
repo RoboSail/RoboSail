@@ -4,19 +4,16 @@
 #include <Servo.h>
 
 // Pin assignments
-const int ROBOSAIL_PIN_RUDDER_SERVO = 8;
-const int ROBOSAIL_PIN_SAIL_SERVO = 9;
+const int SERVO_PIN = 7;
 
-Servo rudderServo;
-Servo sailServo;
+Servo Servo1;
 
 // variable to store the servo position
 int pos = 0;
 
 void setup() {
   // sets servo on the specified pin to be controlled
-  rudderServo.attach(ROBOSAIL_PIN_RUDDER_SERVO);
-  sailServo.attach(ROBOSAIL_PIN_SAIL_SERVO);
+  Servo1.attach(SERVO_PIN);
 }
 
 void loop() {
@@ -24,8 +21,7 @@ void loop() {
   // goes from 0 degrees to 180 degrees in steps of 1 degree
   // tell servo to go to position in variable 'pos'
   for (int pos = 0; pos < 180; pos += 1) {
-    rudderServo.write(pos);
-    sailServo.write(pos);
+    Servo1.write(pos);
 
     // waits 15ms for the servo to reach the position
     delay(15);
@@ -33,8 +29,7 @@ void loop() {
 
   // rotate in the opposite direction
   for (int pos = 180; pos >= 1; pos -= 1) {
-    rudderServo.write(pos);
-    sailServo.write(pos);
+    Servo1.write(pos);
     delay(15);
   }
 }
