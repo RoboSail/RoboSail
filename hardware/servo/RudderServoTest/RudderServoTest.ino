@@ -25,7 +25,7 @@ void setup() {
 }
 
 void loop() {
-  Serial.print("Enter desired rudder angle (-90 to 90): ");
+  Serial.print("Enter desired rudder angle (-50 to 50): ");
 
   // convert input to integer
   pos = Serial.parseInt();
