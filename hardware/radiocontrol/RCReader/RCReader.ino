@@ -8,11 +8,11 @@
 
 // Pin assignments
 //input pins from receiver
-const int ROBOSAIL_PIN_RUDDER_RC = 3;
-const int ROBOSAIL_PIN_SAIL_RC = 2;
+const int ROBOSAIL_PIN_RUDDER_RC = 2;
+const int ROBOSAIL_PIN_SAIL_RC = 3;
 
-const int ROBOSAIL_INTERRUPT_SAIL = 0;
-const int ROBOSAIL_INTERRUPT_RUDDER = 1;
+const int ROBOSAIL_INTERRUPT_SAIL = 1;
+const int ROBOSAIL_INTERRUPT_RUDDER = 0;
 
 volatile unsigned long rcPulseRudderStart = 0;
 volatile int rcPulseRudderWidth;
@@ -57,8 +57,8 @@ void setup() {
 void loop() {
   // the rcPulse****Width variables are set automatically in the background.
   // Calculate the servo position in degrees.
-  int rudderServoOut = map(rcPulseRudderWidth, 1000, 2000, 0, 180);
-  int sailServoOut = map(rcPulseSailWidth, 1000, 2000, 0, 180);
+  int rudderServoOut = map(rcPulseRudderWidth, 1000, 2000, -75, 75);
+  int sailServoOut = map(rcPulseSailWidth, 1090, 1900, 0, 90);
 
   // Print out the values for debug.
   Serial.print("rudder, pulse: ");
