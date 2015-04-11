@@ -31,7 +31,7 @@ void loop() {
   // Print out the values for debug.
   Serial.print("pulse: ");
   Serial.print(windPulseWidth);
-  Serial.print("\tangle: ");
+  Serial.print("\t Angle: ");
   Serial.print(windAngle);
   Serial.println();
 
