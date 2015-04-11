@@ -30,7 +30,7 @@ The solution is to add a delay in `setup()`, slowing down the Arduino and giving
 delay(5000);
 ```
 
-The third problem is a consequence of the first solution. Now that we've told the Arduino to wait for a (long) while, how does it know when the last digit of the number has been received? According to the `parseInt()` [documentation](http://arduino.cc/en/Serial/ParseInt), it will consider a number done when it gets a non-digit character. So, we modify the prompt to tell the user to type a `!` after the number:
+The third problem is a consequence of the first solution. Now that we've told the Arduino to wait for a (long) while, how does it know when the last digit of the number has been received? According to the `parseInt()` [documentation](http://arduino.cc/en/Serial/ParseInt), it will consider a number done when it gets a non-digit character. One way is to modify the prompt to tell the user to type a `!` after the number:
 
 ```
 Serial.print("Enter a whole number, followed by !, then press enter: ");

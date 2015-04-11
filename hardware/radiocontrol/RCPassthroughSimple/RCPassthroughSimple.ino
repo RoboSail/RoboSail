@@ -23,7 +23,7 @@ Servo rudderServo;
 Servo sailServo;
 
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(115200);
 
   // Set RC receiver on digital input pins
   pinMode(ROBOSAIL_PIN_RUDDER_RC, INPUT);

@@ -52,6 +52,25 @@ Interrupt | Assignment
 0         | RC receiver pulse in sail
 1         | RC receiver pulse in rudder
 
+
+Arduino Pin Code
+
+```
+// Pin assignments
+
+
+const int ROBOSAIL_PIN_RUDDER_RC = 3;
+const int ROBOSAIL_PIN_SAIL_RC = 2;
+
+const int ROBOSAIL_PIN_WIND = 7;
+
+const int ROBOSAIL_PIN_RUDDER_SERVO = 8;
+const int ROBOSAIL_PIN_SAIL_SERVO = 9;
+
+const int ROBOSAIL_INTERRUPT_SAIL = 0;
+const int ROBOSAIL_INTERRUPT_RUDDER = 1;
+```
+
 # New Hardware Setup
 
 This section only applies to people who want to follow along with their own hardware. If you're a RoboSail student you can skip this: it's already been done for you.
@@ -60,6 +79,77 @@ This section only applies to people who want to follow along with their own hard
 * Cut V trace on board for separate power source to servo bus. Grounds stay connected 
 * Connect receiver to servo slots 11 (rudder STR), 12, (sail THR) 
 * Connect servos to servo slots 8 (rudder) and 9 (sailWinch).
+
+
+## Calibration and Tuning
+
+These boat constants will differ slightly for each set of hardware used. Each team should record and save the constants that are unique to their boat.
+
+Variable            | Measured Value 
+--------------------|------------------
+`RC_SAIL_MINIMUM`   | 
+`RC_SAIL_MAXIMUM`   | 
+`RC_RUDDER_MINIMUM` | 
+`RC_RUDDER_MAXIMUM` | 
+`SAIL_IN`           | 
+`SAIL_OUT`          | 
+`RUDDER_RIGHT`      | 
+`RUDDER_LEFT`       | 
+`WIND_MINIMUM`      | 
+`WIND_MAXIMUM`      | 
+
+Example values:
+
+Variable            | Measured Value 
+--------------------|------------------
+`RC_SAIL_MINIMUM`   | 1092
+`RC_SAIL_MAXIMUM`   | 1892
+`RC_RUDDER_MINIMUM` | 1096
+`RC_RUDDER_MAXIMUM` | 1924
+`SAIL_IN`           | 1200
+`SAIL_OUT`          | 1892
+`RUDDER_RIGHT`      | 1156
+`RUDDER_LEFT`       | 1874
+`WIND_MINIMUM`      | 0
+`WIND_MAXIMUM`      | 1024
+
+To calculate the values and tune the boat follow these steps:
+
+### Sail Servo
+
+1. Run [RCReader.ino](hardware/radiocontrol/RCReader/RCReader.ino) and open a terminal to examine the measured values.
+2. Center all trim sliders on the RC transmitter.
+3. Move the left stick (the "throttle") all the way down. Record the sail value as `RC_SAIL_MINIMUM`.
+4. Move the left stick all the way up. Record the sail value as `RC_SAIL_MAXIMUM`.
+5. Next, we will tune the hardware of the sailboat. Make sure you have a hex key tool.
+6. Loosen the mainsheet and jibsheet from their booms so that they can slide freely.
+7. Run [RCPassthrough.ino](hardware/radiocontrol/RCPassthrough/RCPassthrough.ino) and open a terminal to examine the measured values.
+8. Move the left stick all the way down so that the sheets are hauled in.
+9. Record the RC value as `SAIL_IN`.
+10. Fix the mainsheet and jibsheet attachments to their booms so that the sails are on the boat centerline.
+11. Gradually move the left stick up until the mainsail is at 90 degrees from the boat.
+12. Record the value as `SAIL_OUT`.
+
+### Rudder Servo
+
+1. Run [RCReader.ino](hardware/radiocontrol/RCReader/RCReader.ino) and open a terminal to examine the measured values.
+2. Center all trim sliders on the RC transmitter.
+3. Move the right stick (the "steering") all the way right. Record the rudder value as `RC_RUDDER_MINIMUM`.
+4. Move the right stick all the way left. Record the rudder value as `RC_RUDDER_MAXIMUM`.
+5. Next, we will tune the hardware of the sailboat. You do not need any tools.
+6. Run [RCPassthrough.ino](hardware/radiocontrol/RCPassthrough/RCPassthrough.ino) and open a terminal to examine the measured values.
+7. Move the right stick right until the rudder is at it's maximum deflection. Record the rudder value as `RUDDER_RIGHT`.
+8. Move the right stick left until the rudder is at it's maximum deflection. Record the rudder value as `RUDDER_LEFT`.
+
+### Wind Sensor
+
+1. Run [WindSensor.ino](hardware/wind/WindSensor/WindSensor.ino) and open a terminal to examine the measured values.
+2. Next, we will tune the hardware of the sailboat.
+3. Rotate the wind vane until the rollover point is found (eg, from 0 to 1024).
+4. Loosen the wind vane sensor, and rotate it until the rollover point is set directly forward.
+5. Fix the wind vane sensor in place.
+6. Measure the minimum value of the wind sensor. Record this value as `WIND_MINIMUM`.
+7. Measure the maximum value of the wind sensor. Record this value as `WIND_MAXIMUM`.
 
 #  VARIABLES defined as Absolute and Relative
 

@@ -18,7 +18,7 @@ void loop() {
   // The Arduino Serial Monitor does not send the "enter" key on press, so we need
   // to send a non-char value to cause the parseInt to see the end of the input
   // number. Hence the exclamation mark.
-  Serial.print("Enter a whole number, followed by !, then press enter: ");
+  Serial.print("Enter a whole number: ");
   x = Serial.parseInt();
 
   // Now echo the number back to the console

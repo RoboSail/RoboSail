@@ -10,7 +10,7 @@ int windAngle = 0;
 int windPulseWidth = 0;
 
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(115200);
 
   // Set RC receiver on digital input pins
   pinMode(ROBOSAIL_PIN_WIND, INPUT);
@@ -22,8 +22,10 @@ void loop() {
   windPulseWidth = pulseIn(ROBOSAIL_PIN_WIND, HIGH, 25000);
   
   // Convert the wind angle to degrees from PWM.  Range -180 to +180
-  windAngle = map(windPulseWidth, 0, 1010, 180, -180);
+  windAngle = map(windPulseWidth, 0, 1024, 180, -180);
   
+  // The sensor occasionally returns out of bounds values, so make sure that
+  //   it fits within our desired range.
   windAngle = constrain(windAngle, -180, 180);
 
   // Print out the values for debug.
@@ -31,10 +33,9 @@ void loop() {
   Serial.print(windPulseWidth);
   Serial.print("\tangle: ");
   Serial.print(windAngle);
+  Serial.println();
 
-  Serial.print("\n"); // Print a new line
-
-  // add delay to not overwhelm serial monitor
+  // add delay to not overwhelm serial monitor (or the user!)
   delay(500);
 }
 
