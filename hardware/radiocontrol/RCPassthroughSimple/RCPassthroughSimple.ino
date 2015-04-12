@@ -12,8 +12,8 @@
 
 // Pin assignments
 //input pins from receiver
-const int ROBOSAIL_PIN_RUDDER_RC = 3;
-const int ROBOSAIL_PIN_SAIL_RC = 2;
+const int ROBOSAIL_PIN_RUDDER_RC = 2;
+const int ROBOSAIL_PIN_SAIL_RC = 3;
 // Output pins to the servos
 const int ROBOSAIL_PIN_RUDDER_SERVO = 8;
 const int ROBOSAIL_PIN_SAIL_SERVO = 9;

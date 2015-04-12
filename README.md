@@ -42,15 +42,15 @@ Make sure that all Libraries are in the Libraries folder in the Sketchbook locat
 
 Pin | Assignment
 ----|-------------------------
-2   | RC receiver sail
-3   | RC receiver rudder
+2   | RC receiver rudder
+3   | RC receiver sail
 8   | Servo rudder
 9   | Servo sail
 
 Interrupt | Assignment
 ----------|-------------------------
-0         | RC receiver pulse in sail
-1         | RC receiver pulse in rudder
+0         | RC receiver pulse in rudder
+1         | RC receiver pulse in sail
 
 
 Arduino Pin Code
@@ -59,16 +59,16 @@ Arduino Pin Code
 // Pin assignments
 
 
-const int ROBOSAIL_PIN_RUDDER_RC = 3;
-const int ROBOSAIL_PIN_SAIL_RC = 2;
+const int ROBOSAIL_PIN_RUDDER_RC = 2;
+const int ROBOSAIL_PIN_SAIL_RC = 3;
 
 const int ROBOSAIL_PIN_WIND = 7;
 
 const int ROBOSAIL_PIN_RUDDER_SERVO = 8;
 const int ROBOSAIL_PIN_SAIL_SERVO = 9;
 
-const int ROBOSAIL_INTERRUPT_SAIL = 0;
-const int ROBOSAIL_INTERRUPT_RUDDER = 1;
+const int ROBOSAIL_INTERRUPT_SAIL = 1;
+const int ROBOSAIL_INTERRUPT_RUDDER = 0;
 ```
 
 # New Hardware Setup
