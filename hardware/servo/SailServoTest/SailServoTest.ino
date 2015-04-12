@@ -25,13 +25,21 @@ void setup() {
 }
 
 void loop() {
-  Serial.print("Enter desired sail servo angle (appox. 55 to 120): ");
+  Serial.print("Enter desired sail angle (0 to 90): ");
 
   // convert input to integer
   pos = Serial.parseInt();
 
   // print what was entered
-  Serial.println(pos);
+  Serial.print(pos);
+
+  // convert from desired sail angle to servo angle
+  pos = map(pos, 0, 90, 55, 125);
+  
+  // print the converted value
+  Serial.print(" (servo angle: ");
+  Serial.print(pos);
+  Serial.println(")");
 
   // tell servo to go to position in variable 'pos'
   sailServo.write(pos);
