@@ -1,8 +1,24 @@
-// Helpful program to see what the RC tranmitter is sending to the servos,
-// and to test and figure out the limits of the attached servos.
+/* RCReader rev 4/21/2015
+© 2014-2015 RoboSail
+This program puts the Arduino micro-computer to read the control signals 
+coming in from the RC (Radio Control) system for both the Rudder and Sail channels.
 
-// This program will print the recieved values, and the corresponding angle,
-// to the serial console.
+It displays several values to the Serial Monitor:
+  - The actual "pulse" coming in from the receiver for each channel
+    (typical range of 1000 - 2000)
+  - the angle at which the rudder or sail should be positioned 
+    given that command (in the RoboSail frame of reference) 
+
+This program helps the user determine 
+  - if they are reading good signals from the receiver (range of 1000 - 2000)
+  - if the Arduino computer is functioning correctly
+
+  NOTE: This program uses interrupts to read in the PWM signals from the Receiver
+  rather than using the pulseIn() function. It calculates the pulse length by 
+  reading the Low-High and High-Low transitions on the input pins and 
+  calculating the time lapsed between them.
+ 
+*/
 
 #include <Servo.h>
 
@@ -14,13 +30,48 @@ const int ROBOSAIL_PIN_SAIL_RC = 3;
 const int ROBOSAIL_INTERRUPT_SAIL = 1;
 const int ROBOSAIL_INTERRUPT_RUDDER = 0;
 
+// variables to hold input and output values
 volatile unsigned long rcPulseRudderStart = 0;
 volatile int rcPulseRudderWidth;
 volatile unsigned long rcPulseSailStart = 0;
 volatile int rcPulseSailWidth;
+int rudderServoOut;
+int sailServoOut;
 
-/** Handy method that we can reuse for multiple ISRs.
- */
+void setup() {
+  Serial.begin(115200);
+  Serial.println("\nRC Reader code - RoboSail");
+
+  attachInterrupt(ROBOSAIL_INTERRUPT_RUDDER, rcInputRudderISR, CHANGE);
+  attachInterrupt(ROBOSAIL_INTERRUPT_SAIL, rcInputSailISR, CHANGE);
+}
+
+void loop() {
+  // the rcPulse****Width variables are set automatically in the background.
+  // Calculate the servo position in degrees.
+  rudderServoOut = map(rcPulseRudderWidth, 1000, 2000, -75, 75);
+  sailServoOut = map(rcPulseSailWidth, 1090, 1900, 0, 90);
+
+  // Print out the values for debug.
+  Serial.print("Rudder, pulse: ");
+  Serial.print(rcPulseRudderWidth);
+  Serial.print("\t Angle: ");
+  Serial.print(rudderServoOut);
+
+  Serial.print("\t\t Sail, pulse: ");
+  Serial.print(rcPulseSailWidth);
+  Serial.print("\t Angle: ");
+  Serial.print(sailServoOut);
+
+  Serial.print("\n"); // Print a new line
+  
+  delay(250);
+}
+
+//*************Functions to handle interrupts***********
+
+// Handy method that we can reuse for multiple ISRs.
+
 void calculatePulseIn(const int pin, volatile unsigned long & timeStart, volatile int & pulseTime) {
   //if the pin has gone HIGH, record the microseconds since the Arduino started up
   if (digitalRead(pin) == HIGH) {
@@ -47,32 +98,4 @@ void rcInputSailISR() {
   calculatePulseIn(ROBOSAIL_PIN_SAIL_RC, rcPulseSailStart, rcPulseSailWidth);
 }
 
-void setup() {
-  Serial.begin(115200);
-
-  attachInterrupt(ROBOSAIL_INTERRUPT_RUDDER, rcInputRudderISR, CHANGE);
-  attachInterrupt(ROBOSAIL_INTERRUPT_SAIL, rcInputSailISR, CHANGE);
-}
-
-void loop() {
-  // the rcPulse****Width variables are set automatically in the background.
-  // Calculate the servo position in degrees.
-  int rudderServoOut = map(rcPulseRudderWidth, 1000, 2000, -75, 75);
-  int sailServoOut = map(rcPulseSailWidth, 1090, 1900, 0, 90);
-
-  // Print out the values for debug.
-  Serial.print("rudder, pulse: ");
-  Serial.print(rcPulseRudderWidth);
-  Serial.print("\tangle: ");
-  Serial.print(rudderServoOut);
-
-  Serial.print("\t\tsail, pulse: ");
-  Serial.print(rcPulseSailWidth);
-  Serial.print("\tangle: ");
-  Serial.print(sailServoOut);
-
-  Serial.print("\n"); // Print a new line
-  
-  delay(250);
-}
 
