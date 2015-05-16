@@ -1,4 +1,4 @@
-/* BoatCodeStarterWind+GPS rev 5/9/2015
+/* BoatCodeStarterWind+GPS rev 5/16/2015
 © 2014-2015 RoboSail
 This program contains starter code for programming a boat 
 using information from the Wind Sensor and GPS module.
@@ -60,7 +60,6 @@ Servo sailServo;
 
 void setup() {
   Serial.begin(115200);
-  Serial.println("\nRoboSail BoatCode Wind+GPS- XX");  //write program name here
   // Set RC receiver and WindSensor on digital input pins
   pinMode(ROBOSAIL_PIN_RUDDER_RC, INPUT);
   pinMode(ROBOSAIL_PIN_SAIL_RC, INPUT);
@@ -83,18 +82,15 @@ void loop() {
   // Read the command pulse from the RC receiver
   rudderPulseWidth = pulseIn(ROBOSAIL_PIN_RUDDER_RC, HIGH, 25000);
   sailPulseWidth = pulseIn(ROBOSAIL_PIN_SAIL_RC, HIGH, 25000);
-  // Calculate the servo position in degrees.
   rudderServoOut = map(rudderPulseWidth, 1000, 2000, -75, 75);
   sailServoOut = map(sailPulseWidth, 1090, 1900, 0, 90);
   
   // Read values from the WindSensor
   windPulseWidth = pulseIn(ROBOSAIL_PIN_WIND, HIGH, 25000);
   // Convert the wind angle to degrees from PWM.  Range -180 to +180
-  windAngle = map(windPulseWidth, 0, 1024, 180, -180);
   windAngle = constrain(windAngle, -180, 180);
 
   // Read position from the GPS
-  readGPS();  //puts values in   
 
 //**************** your code here ******************
 // calculate values for rudderServoOut and sailServoOut in degrees.
@@ -134,11 +130,8 @@ void printToMonitor()
   Serial.print(sailServoOut);
 
   Serial.print("\n"); // Print a new line
-  Serial.print("Fix: "); Serial.print((int)GPS.fix);
-  Serial.print(" quality: "); Serial.println((int)GPS.fixquality);
   Serial.print("x = "); Serial.print(relPositionX);
   Serial.print("   y = "); Serial.print(relPositionY);
-  Serial.print("  angle = "); Serial.println(angleFromStart);
       
 }
 
@@ -147,23 +140,18 @@ SIGNAL(TIMER0_COMPA_vect) {
   GPS.read(); // reads char (if available) into internal buffer in GPS object
 }
 
-// function to enable TIMER0 interrupt
 void enableInterrupt() {
   OCR0A = 0xAF;
   TIMSK0 |= _BV(OCIE0A);
 }
 
-void readGPS()
 {
 if (GPS.newNMEAreceived())
   {
-    char* LastNMEA; // pointer to GPS data
     LastNMEA = GPS.lastNMEA(); // read the string and set the newNMEAreceived() flag to false
     if (!GPS.parse(LastNMEA)) 
     {
-      return; // we can fail to parse a sentence in which case we should just wait for another
     }
-   
     if (GPS.fix)
     {
       if (start_pos_found)
@@ -179,7 +167,6 @@ if (GPS.newNMEAreceived())
         while (angleFromStart > 360){ angleFromStart -= 360; }
 
       }
-      else // starting position not yet found
       { 
         // take in lat/lon degree values and return (x,y) in meters in pos array
         calc.latLonToUTM(GPS.latitudeDegrees, GPS.longitudeDegrees, pos);
