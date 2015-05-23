@@ -11,11 +11,23 @@ Adafruit_LSM303_Mag_Unified * Orientation::magn;
  * 
  * The algorithm is based on http://cache.freescale.com/files/sensors/doc/app_note/AN4248.pdf
  * 
- * Hardiron calibration must be performed. The process is simple:
- *   1. Mount the magnetometer in the location that you intend to use it at
- *   2. Rotate the body through all possible orientations
+ * Hard iron calibration must be performed. The process is simple:
+ *   1. Mount the magnetometer in the location that you intend to use it
+ *   2. Slowly rotate the body through all possible orientations
  *   3. Record the minimum and maximum for each axis of the magnetometer
- *   4. Average the minumum and maximum for each axis. This will give you your hardiron x,y,z offsets.
+ *   4. Average the minumum and maximum for each axis. This will give you your hard iron x,y,z offsets.
+ *
+ * Note:
+ * This library is written with the Y axis flipped from how it is shown on the LSM303.
+ * If you hold the LSM303 such that the chips are up and the connector is closest to you
+ * (the text should be right-side-up):
+ * - The positive X-axis points away from you.
+ * - The positive Y-axis points right.
+ * - The positive Z-axis points down.
+ *
+ * You may need to adjust the signs in the code below so that:
+ * - When an axis points straight down, the accelerometer reading on that axis should be positive
+ * - When an axis points towards magnetic north, the magnetometer reading on that axis should be positive
  *
  * @param accl The LSM303 acceleration object
  * @param magn The LSM303 magnetometer object
@@ -27,7 +39,6 @@ Adafruit_LSM303_Mag_Unified * Orientation::magn;
  * @param yaw The result yaw in degrees
  */
 void Orientation::calculate(float & roll, float & pitch, float & yaw, float & heading){
-  
   // Get a new sensor event
   sensors_event_t event_accl; 
   sensors_event_t event_magn; 
@@ -40,15 +51,18 @@ void Orientation::calculate(float & roll, float & pitch, float & yaw, float & he
   float accl_y = event_accl.acceleration.y;
   float accl_z = event_accl.acceleration.z;
 
-  // Signs should be choosen so that, when the axis is down, the value is + positive.
-  // But that doesn't seem to work ?...
+  // Hard iron calibration
   float magn_x = event_magn.magnetic.x - hardiron_x;
-  float magn_y = -event_magn.magnetic.y - hardiron_y;
-  float magn_z = -event_magn.magnetic.z - hardiron_z;
+  float magn_y = event_magn.magnetic.y - hardiron_y;
+  float magn_z = event_magn.magnetic.z - hardiron_z;
+
+  // Signs should be choosen so that, when the axis is North/Down, the value is + positive.
+  magn_y = -magn_y;
+  magn_z = -magn_z;
   
   // Freescale solution
   roll = atan2(accl_y, accl_z);
-  pitch = atan(-accl_x / (accl_y * sin(roll) + accl_z * cos(roll)));
+  pitch = atan(-accl_x / sqrt( pow(accl_y,2) + pow(accl_z,2) ) );
   
   float magn_fy_fs = magn_z * sin(roll) - magn_y*cos(roll);
   float magn_fx_fs = magn_x * cos(pitch) + magn_y * sin(pitch) * sin(roll) + magn_z * sin(pitch) * cos(roll);
@@ -70,9 +84,13 @@ void Orientation::calculate(float & roll, float & pitch, float & yaw, float & he
  */
 float Orientation::yawToHeading(float yaw){
     float heading = yaw + declination;
-    if (heading < 0.0){
-        heading += 360.0;
+
+    if (heading >= 360) {
+      heading -= 360;
+    } else if (heading < 0) {
+      heading += 360;
     }
+
     return heading;
 }
 
