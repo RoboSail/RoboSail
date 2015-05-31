@@ -14,8 +14,6 @@ and GPS data is calculated and displayed as relative (x,y)
 position from start on powerup.
 */
 boolean verbose = true;  //true calls function for values to be printed to monitor
-// set to 'true' if you want to print the parsed GPS info to Serial console
-bool print_parsed_gps = true;
 
 #include <Servo.h>
 #include <Adafruit_GPS.h>
@@ -46,6 +44,9 @@ int windPulseWidth = 0;
 //variables for GPS
 // this will be false until GPS fix is found and starting position saved
 bool start_pos_found = false;
+int GPSfix;
+int GPSqual;
+int GPSsat;
 // once GPS fix is found, these variables will be updated
 float startPositionX = 0;
 float startPositionY = 0;
@@ -60,6 +61,7 @@ Servo sailServo;
 
 void setup() {
   Serial.begin(115200);
+  Serial.println("\nRoboSail BoatCode Wind+GPS-5/16");  //write program name/rev here
   // Set RC receiver and WindSensor on digital input pins
   pinMode(ROBOSAIL_PIN_RUDDER_RC, INPUT);
   pinMode(ROBOSAIL_PIN_SAIL_RC, INPUT);
@@ -82,15 +84,18 @@ void loop() {
   // Read the command pulse from the RC receiver
   rudderPulseWidth = pulseIn(ROBOSAIL_PIN_RUDDER_RC, HIGH, 25000);
   sailPulseWidth = pulseIn(ROBOSAIL_PIN_SAIL_RC, HIGH, 25000);
+  // Calculate the servo position in degrees.  Calibrate the 1st 2 values in map as necessary
   rudderServoOut = map(rudderPulseWidth, 1000, 2000, -75, 75);
   sailServoOut = map(sailPulseWidth, 1090, 1900, 0, 90);
   
   // Read values from the WindSensor
   windPulseWidth = pulseIn(ROBOSAIL_PIN_WIND, HIGH, 25000);
   // Convert the wind angle to degrees from PWM.  Range -180 to +180
+  windAngle = map(windPulseWidth, 0, 1023, 180, -180);
   windAngle = constrain(windAngle, -180, 180);
 
   // Read position from the GPS
+  readGPS();  //puts values in pos array
 
 //**************** your code here ******************
 // calculate values for rudderServoOut and sailServoOut in degrees.
@@ -130,8 +135,12 @@ void printToMonitor()
   Serial.print(sailServoOut);
 
   Serial.print("\n"); // Print a new line
+  Serial.print("Fix: "); Serial.print(GPSfix);
+  Serial.print(" quality: "); Serial.print(GPSqual);
+  Serial.print(" satellites: "); Serial.println(GPSsat);
   Serial.print("x = "); Serial.print(relPositionX);
   Serial.print("   y = "); Serial.print(relPositionY);
+  Serial.print("  angle from start = "); Serial.println(angleFromStart);
       
 }
 
@@ -140,18 +149,26 @@ SIGNAL(TIMER0_COMPA_vect) {
   GPS.read(); // reads char (if available) into internal buffer in GPS object
 }
 
+// function to enable TIMER0 interrupt for GPS
 void enableInterrupt() {
   OCR0A = 0xAF;
   TIMSK0 |= _BV(OCIE0A);
 }
 
+void readGPS()  //gets GPS data, pareses it, and returns (x,y) position in meters in array called pos[]
 {
 if (GPS.newNMEAreceived())
   {
+    char* LastNMEA; // declare pointer to GPS data
     LastNMEA = GPS.lastNMEA(); // read the string and set the newNMEAreceived() flag to false
     if (!GPS.parse(LastNMEA)) 
     {
+      return; // failed to parse a sentence (was likely incomplete) so just wait for another
     }
+    Serial.println("\nNew data from GPS");
+    GPSfix = GPS.fix;  //put parsed data in variables for printing
+    GPSqual = GPS.fixquality;
+    GPSsat = GPS.satellites;
     if (GPS.fix)
     {
       if (start_pos_found)
@@ -167,6 +184,7 @@ if (GPS.newNMEAreceived())
         while (angleFromStart > 360){ angleFromStart -= 360; }
 
       }
+      else // starting position not yet found but there is a fix
       { 
         // take in lat/lon degree values and return (x,y) in meters in pos array
         calc.latLonToUTM(GPS.latitudeDegrees, GPS.longitudeDegrees, pos);
