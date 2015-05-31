@@ -30,9 +30,9 @@
 /* Assign a unique ID to this sensor at the same time */
 Adafruit_LSM303_Mag_Unified mag = Adafruit_LSM303_Mag_Unified(12345);
 
-float magXrange[2];
-float magYrange[2];
-float magZrange[2];
+float magXrange[] = {1000, -1000};
+float magYrange[] = {1000, -1000};
+float magZrange[] = {1000, -1000};
 
 float magXcal = 0;
 float magYcal = 0;
@@ -109,14 +109,24 @@ void loop(void)
 
 void magCalibration(sensors_event_t mag_event)
 {
-  magXrange[0] = min(magXrange[0], mag_event.magnetic.x);
-  magXrange[1] = max(magXrange[1], mag_event.magnetic.x);
-
-  magYrange[0] = min(magYrange[0], mag_event.magnetic.y);
-  magYrange[1] = max(magYrange[1], mag_event.magnetic.y);
+  float mx = mag_event.magnetic.x;
+  float my = mag_event.magnetic.y;
+  float mz = mag_event.magnetic.z;
   
-  magZrange[0] = min(magZrange[0], mag_event.magnetic.z);
-  magZrange[1] = max(magZrange[1], mag_event.magnetic.z);
+  if (mx != 0) {
+    magXrange[0] = min(magXrange[0], mx);
+    magXrange[1] = max(magXrange[1], mx);
+  }
+
+  if (my != 0) {
+    magYrange[0] = min(magYrange[0], my);
+    magYrange[1] = max(magYrange[1], my);
+  }
+  
+  if (mz != 0) {
+    magZrange[0] = min(magZrange[0], mz);
+    magZrange[1] = max(magZrange[1], mz);
+  }
   
   magXcal = (magXrange[0] + magXrange[1])/2;
   magYcal = (magYrange[0] + magYrange[1])/2;
