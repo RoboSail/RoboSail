@@ -64,7 +64,7 @@ float hardiron_x = -11.91;
 float hardiron_y = 5.05;
 float hardiron_z = -1.02;
 
-float roll, pitch, yaw, heading;
+float roll, pitch, yaw, heading, robosailHeading, robosailRoll;
 // Source: http://www.ngdc.noaa.gov/geomag-web/#igrfwmm
 float declination = -14.6067;
 /* Assign a unique ID to this sensor at the same time */
@@ -171,10 +171,8 @@ void printToMonitor()
   Serial.print("   y = "); Serial.print(relPositionY);
   Serial.print("  angle from start = "); Serial.println(angleFromStart);
       
-  Serial.print("Roll: "); Serial.print(roll);
-  Serial.print(", Pitch: "); Serial.print(pitch);
-  Serial.print(", Yaw: "); Serial.print(yaw);
-  Serial.print(", Heading: "); Serial.println(heading);
+  Serial.print("Roll: "); Serial.print(robosailRoll);
+  Serial.print(",              Heading: "); Serial.println(robosailHeading);
   Serial.println();
 }
 
@@ -271,7 +269,7 @@ void readCompass()  //reads Compass to get heading and tilt
   yaw = atan2(my_adj,mx_adj);
   
   roll = roll * 180/Pi;
-  pitch = pitch * 180/Pi;
+  pitch =  pitch * 180/Pi;
   yaw = yaw * 180/Pi;
   
   heading = yaw + declination;
@@ -281,5 +279,11 @@ void readCompass()  //reads Compass to get heading and tilt
   } else if (heading < 0) {
     heading += 360;
   }
+ //The heading is converted to a frame of reference for RoboSail:
+ // East is 0 degrees, North is 90 deg, West is 180 deg, South is 270 deg. 
+  robosailHeading = (360 - heading) + 90;
+  if (robosailHeading >= 360) {robosailHeading -= 360;}
   
+  //define roll for RoboSail as rolling to Port side is positive, rolling to Starboard is negative
+  robosailRoll  = -1 * roll;
 }

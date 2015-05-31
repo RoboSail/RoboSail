@@ -13,6 +13,9 @@
  * You may need to adjust the signs in the code below so that:
  * - When an axis points straight down, the accelerometer reading on that axis should be positive
  * - When an axis points towards magnetic north, the magnetometer reading on that axis should be positive
+ 
+ * - The heading is converted to a frame of reference for RoboSail:
+ * - East is 0 degrees, North is 90 deg, West is 180 deg, South is 270 deg. 
  */
  
 #include <Wire.h>
@@ -111,11 +114,15 @@ void loop(void)
     heading += 360;
   }
   
+  float robosailHeading = (360 - heading) + 90;
+  if (robosailHeading >= 360)   { robosailHeading -= 360;}
+  
   Serial.print("Roll: "); Serial.print(roll);
   Serial.print(", Pitch: "); Serial.print(pitch);
   Serial.print(", Yaw: "); Serial.print(yaw);
-  Serial.print(", Heading: "); Serial.println(heading);
+  Serial.print(", Heading: "); Serial.print(heading);
+  Serial.print(", RoboSail Heading: "); Serial.println(robosailHeading);
 
-  delay(1000);
+  delay(500);
 }
 
