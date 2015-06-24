@@ -8,7 +8,7 @@
 #include <Wire.h>
 #include <Adafruit_Sensor.h>
 #include <Adafruit_LSM303_U.h>
-#include <Orientation.h>
+#include <orientation.h>
 
 // These values will need to be adjusted based on your particular compass.
 // Use compassCalibration to determine the correct hard iron calibration.
