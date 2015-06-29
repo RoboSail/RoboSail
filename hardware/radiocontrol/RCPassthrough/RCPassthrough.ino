@@ -1,4 +1,4 @@
-/* RCPassthroughSimple rev 4/21/2015
+/* RCPassthrough rev 4/21/2015
 © 2014-2015 RoboSail
 This program puts the Arduino micro-computer in the RC (Radio Control)system 
 It takes in the control signals coming in from the Receiver and
@@ -14,7 +14,7 @@ This program helps the user determine
   - if the servos are functioning correctly and moving to the expected positions
   - if the Arduino computer is functioning correctly
 
-  NOTE: This program is an example of may result in noisy readings
+  NOTE: This program may result in noisy readings due to the limitations of PulseIn().
     Using an ISR (Interrupt Service Routine) as in RCPassthroughAdvanced 
     is a cleaner way to read in signals.
 */
@@ -39,8 +39,8 @@ Servo rudderServo;
 Servo sailServo;
 
 void setup() {
-  Serial.begin(115200);
-  Serial.println("\nRCPassthroughSimple code - RoboSail");
+  Serial.begin(9600);
+  Serial.println("\nRCPassthrough code - RoboSail");
   // Set RC receiver on digital input pins
   pinMode(ROBOSAIL_PIN_RUDDER_RC, INPUT);
   pinMode(ROBOSAIL_PIN_SAIL_RC, INPUT);

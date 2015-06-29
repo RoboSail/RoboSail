@@ -1,5 +1,13 @@
-// Test the various positions available on the rudder servo
-//   by manually inputting positions
+/* RudderServoTest rev 6/28/2015
+   © 2014-2015 RoboSail
+   Test the various rudder positions available by driving the
+   sail servo to positons entered by the user.
+   The user types in the desired angle through the Serial Monitor.
+   -50 means the rudder is fully to port, and +500 means the rudder
+   is fully to starboard.
+   Note that the Rudder Servo actual center postion is 90, so
+   the user's desired angles must be mapped in the code to these values.
+*/
 
 #include <Servo.h>
 
@@ -13,25 +21,20 @@ int pos = 0;
 
 void setup() {
   // Sets up communication with the serial monitor
-  Serial.begin(115200);
+  Serial.begin(9600);
 
   // Tell Serial to wait for this long in order to receive a number
   Serial.setTimeout(1000 * 60 * 60);
 
   rudderServo.attach(ROBOSAIL_PIN_RUDDER_SERVO);
 
-  // Give the user some time to set up the serial monitor
-  delay(5000);
 }
 
 void loop() {
   Serial.print("Enter desired rudder angle (-50 to 50): ");
 
-  // convert input to integer
-  pos = Serial.parseInt();
-
-  // print what was entered
-  Serial.println(pos);
+  pos = Serial.parseInt();   // convert input to integer
+  Serial.println(pos);      // print what was entered
 
   // convert from rudder angle to servo angle
   pos = map(pos, -90, 90, 0, 180);

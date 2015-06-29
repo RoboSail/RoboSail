@@ -1,13 +1,13 @@
-/* BoatCodeStarterWind+GPS rev 5/16/2015
+/* BoatCodeStarterWind+GPS rev 6/28/2015
 © 2014-2015 RoboSail
 This program contains starter code for programming a boat 
 using information from the Wind Sensor and GPS module.
 For detailed information about getting input from the WindSensor,
 input from the RC receiver, and sending output to the Servos,
-see these programs: WindSensor, GPSTest, and RCPassThroughSimple
+see these programs: WindSensor, GPSTest, and RCPassThrough
 
 Program values are displayed to the Serial Monitor when the 
-variable "verbose" is set to true.  otherwise set verbose to false.
+variable "verbose" is set to true.  Otherwise set verbose to false.
 
 Wind data is displayed in degrees with irons wind = 0, 
 and GPS data is calculated and displayed as relative (x,y)
@@ -60,8 +60,8 @@ Servo rudderServo;
 Servo sailServo;
 
 void setup() {
-  Serial.begin(115200);
-  Serial.println("\nRoboSail BoatCode Wind+GPS-5/16");  //write program name/rev here
+  Serial.begin(9600);
+  Serial.println("\nRoboSail BoatCode Wind+GPS 6/28");  //write program name/rev here
   // Set RC receiver and WindSensor on digital input pins
   pinMode(ROBOSAIL_PIN_RUDDER_RC, INPUT);
   pinMode(ROBOSAIL_PIN_SAIL_RC, INPUT);

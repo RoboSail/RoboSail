@@ -2,7 +2,7 @@
 
 void setup() {
   // Sets up communication with the serial monitor
-  Serial.begin(115200);
+  Serial.begin(9600);
 }
 
 void loop() {

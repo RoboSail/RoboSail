@@ -1,9 +1,20 @@
-/* Hard iron calibration must be performed before you can get accurate compass readings.
- * Use compassCalibration (in the Orientation library) to determine the correct hard iron calibration.
- * Once you have determined the hard iron calibration factors, edit the sketch below.
- *
- * Note:
- * This sketch is written with the Y axis flipped from how it is shown on the LSM303.
+/* CompassBasicwith CalibrationandTilt rev 6/29/2015
+© 2014-2015 RoboSail
+Use this program after getting hardiron calibration values from compassCalibration.
+Edit the code here and enter the hardiron calibration factors.
+You will also need to adjust the declination based on your geographical area.
+
+This program calculates and displays roll, pitch, yaw, standard Compass heading 
+and RoboSail Heading.  Standard Compass heading defines North = 0, E = 90, S = 180, W = 270.
+For Robosail we define E = 0, N = 90, W = 180, s = 270.  The translation is done in the code.
+
+This code uses the accelerometer data to accomplish Tilt Compensation.
+It is accurate to about +-5 degrees.  If the module is moving (experiencing accelerations 
+in addition to those from gravity) the tilt compensation will be affected.)
+
+This code uses the orientation.cpp library where the calculations are done.  
+
+/* This sketch is written with the Y axis flipped from how it is shown on the LSM303.
  * If you hold the LSM303 such that the chips are up and the connector is closest to you
  * (the text should be right-side-up):
  * - The positive X-axis points away from you.
@@ -13,10 +24,7 @@
  * You may need to adjust the signs in the code below so that:
  * - When an axis points straight down, the accelerometer reading on that axis should be positive
  * - When an axis points towards magnetic north, the magnetometer reading on that axis should be positive
- 
- * - The heading is converted to a frame of reference for RoboSail:
- * - East is 0 degrees, North is 90 deg, West is 180 deg, South is 270 deg. 
- */
+*/
  
 #include <Wire.h>
 #include <Adafruit_Sensor.h>
@@ -30,6 +38,14 @@ float hardiron_z = -1.02;
 
 // Source: http://www.ngdc.noaa.gov/geomag-web/#igrfwmm
 float declination = -14.6067;
+
+float roll;
+float pitch;
+float yaw;
+float heading;
+float robosailHeading;
+
+float ax, ay, az, mx, my, mz, mx_adj, my_adj;
 
 /* Assign a unique ID to this sensor at the same time */
 Adafruit_LSM303_Mag_Unified mag = Adafruit_LSM303_Mag_Unified(12345);
@@ -53,7 +69,7 @@ void displaySensorDetails()
 
 void setup(void) 
 {
-  Serial.begin(115200);
+  Serial.begin(9600);
   Serial.println("Magnetometer + Accelerometer Test with Hard Iron Calibration and Tilt Correction"); Serial.println("");
   
   /* Enable auto-gain */
@@ -69,6 +85,10 @@ void setup(void)
   
   /* Display some basic information on this sensor */
   displaySensorDetails();
+  Serial.print("Your hardiron values are X: "); Serial.print(hardiron_x);
+  Serial.print("  Y: "); Serial.print(hardiron_y); 
+  Serial.print("  Z: "); Serial.println(hardiron_z); Serial.println();
+
 }
 
 void loop(void) 
@@ -80,33 +100,33 @@ void loop(void)
   mag.getEvent(&mag_event);
 
   /* Invert X so that when when X, Y, or Z is pointed down, it has a positive reading. */
-  float ax = -accel_event.acceleration.x;
-  float ay = accel_event.acceleration.y;
-  float az = accel_event.acceleration.z;
+  ax = -accel_event.acceleration.x;
+  ay = accel_event.acceleration.y;
+  az = accel_event.acceleration.z;
   
   /* Adjust for hard iron effects */
-  float mx = mag_event.magnetic.x - hardiron_x;
-  float my = mag_event.magnetic.y - hardiron_y;
-  float mz = mag_event.magnetic.z - hardiron_z;
+  mx = mag_event.magnetic.x - hardiron_x;
+  my = mag_event.magnetic.y - hardiron_y;
+  mz = mag_event.magnetic.z - hardiron_z;
 
   /* Invert Y and Z axis so that when X, Y, or Z is pointed towards Magnetic North they get a positive reading. */
   my = -my;
   mz = -mz;
   
-  float roll = atan2(ay,az);
-  float pitch = atan(-ax/sqrt(pow(ay,2)+pow(az,2)));
+  roll = atan2(ay,az);
+  pitch = atan(-ax/sqrt(pow(ay,2)+pow(az,2)));
   
-  float my_adj = mz*sin(roll) - my*cos(roll);
-  float mx_adj = (mx*cos(pitch) + my*sin(pitch)*sin(roll) + mz*sin(pitch)*cos(roll));
+  my_adj = mz*sin(roll) - my*cos(roll);
+  mx_adj = (mx*cos(pitch) + my*sin(pitch)*sin(roll) + mz*sin(pitch)*cos(roll));
   
-  float yaw = atan2(my_adj,mx_adj);
+  yaw = atan2(my_adj,mx_adj);
   
   float Pi = 3.1415926;
   roll = roll * 180/Pi;
   pitch = pitch * 180/Pi;
   yaw = yaw * 180/Pi;
   
-  float heading = yaw + declination;
+  heading = yaw + declination;
   
   if (heading >= 360) {
     heading -= 360;
@@ -114,7 +134,7 @@ void loop(void)
     heading += 360;
   }
   
-  float robosailHeading = (360 - heading) + 90;
+  robosailHeading = (360 - heading) + 90;
   if (robosailHeading >= 360)   { robosailHeading -= 360;}
   
   Serial.print("Roll: "); Serial.print(roll);

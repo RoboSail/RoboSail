@@ -77,7 +77,7 @@ Servo rudderServo;
 Servo sailServo;
 
 void setup() {
-  Serial.begin(115200);
+  Serial.begin(9600);
   Serial.println("\nRoboSail BoatCode Wind+GPS+Compass-5/31");  //write program name/rev here
   // Set RC receiver and WindSensor on digital input pins
   pinMode(ROBOSAIL_PIN_RUDDER_RC, INPUT);
@@ -285,5 +285,5 @@ void readCompass()  //reads Compass to get heading and tilt
   if (robosailHeading >= 360) {robosailHeading -= 360;}
   
   //define roll for RoboSail as rolling to Port side is positive, rolling to Starboard is negative
-  robosailRoll  = -1 * roll;
+  robosailRoll  = -1 * roll; 
 }

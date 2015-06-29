@@ -5,13 +5,11 @@ int x = 0;
 
 void setup() {
   // Sets up communication with the serial monitor
-  Serial.begin(115200);
+  Serial.begin(9600);
 
   // Set the serial timeout so that it waits for a sufficiently long time (1 hour)
   Serial.setTimeout(1000 * 60 * 60);
 
-  // Give the user time to open a console so that the prompt isn't missed
-  delay(5000);
 }
 
 void loop() {

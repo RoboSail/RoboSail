@@ -21,7 +21,7 @@ int windAngle = 0;
 int windPulseWidth = 0;
 
 void setup() {
-  Serial.begin(115200);
+  Serial.begin(9600);
 
   // Set WindSensor on digital input pins
   pinMode(ROBOSAIL_PIN_WIND, INPUT);

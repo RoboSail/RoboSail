@@ -1,21 +1,23 @@
 How to use Electronic Compass for RoboSail boats
 using Adafruit LSM303 3-axis magnetometer and 3-axis accelerometer
- * basic operation to verify hardware and connections (compassBasic)
- * basic operation with Orientation library (compassTest)
- * hard-iron calibration program to get values for other programs (compassCalibration)
- * tilt-compensated operation
+ 1 basic operation to verify hardware and connections (compassBasic)
+ 2 hard-iron calibration program to get values for other programs (compassCalibration)
+ 3 basic operation with hard-iron calibration (compassBasicwithCalibration)
+ 4 basic operation with hard-iron calibration and Orientation library (compassTest)
+ 5 tilt-compensated operation (compassBasicwithCalibrationandTilt)
 
 In the "Libraries/Orientation" folder:
 
 Orientation.cpp - Library for tilt calibrated compass readings
 Orientation.h - Header file for library
-compassTest - Example of how to use Orientation library (get values from compassCalibration first)
-compassCalibration - Code to use to determine hard iron calibration
+
 
 In the "hardware/compass" folder:
 
-compassBasic - Raw accelerometer and magnetometer readings
+compassBasic - Raw accelerometer and magnetometer readings and prints to the screen
+compassCalibration - Code to use to determine hard iron calibration
 compassBasicwithCalibration - hard iron and axis orientation correction (same as CompassTest with hardiron correction)
+compassTest - Example of how to use Orientation library (get values from compassCalibration first)
 compassBasicwithCalibrationandTilt - roll, pitch, yaw, and heading
 
 

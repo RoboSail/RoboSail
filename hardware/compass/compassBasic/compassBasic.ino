@@ -1,3 +1,19 @@
+/* CompassBasic rev 6/28/2015
+© 2014-2015 RoboSail
+This program reads the LSM303 Magnetometer/Accelerometer module through 
+the Arduino Mega. It reads the raw values for X, Y, Z from both the 
+Magnetometer and Acclerometer and prints them to the screen.
+
+Use the code to see that the wiring is set up correctly, the range of 
+values coming in from the sensors,and to observe the values as you rotate/move 
+the module.
+
+It also test the libraries that convert the GPS latitude/longitude data (in degrees) 
+into x,y coordinates (in meters).
+The user can determine the information that is printed to the Serial Monitor
+by setting variables in the code to true or false.
+*/
+
 #include <Wire.h>
 #include <Adafruit_Sensor.h>
 #include <Adafruit_LSM303_U.h>
@@ -24,7 +40,7 @@ void displaySensorDetails()
 
 void setup(void) 
 {
-  Serial.begin(115200);
+  Serial.begin(9600);
   Serial.println("Magnetometer + Accelerometer Test"); Serial.println("");
   
   /* Enable auto-gain */

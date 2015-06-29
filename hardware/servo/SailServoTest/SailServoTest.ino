@@ -1,5 +1,13 @@
-// Test the various positions available on the sail servo
-//   by manually inputting positions
+/* SailServoTest rev 6/28/2015
+   © 2014-2015 RoboSail
+   Test the various sail positions available by driving the
+   sail servo to positons entered by the user.
+   The user types in the desired angle through the Serial Monitor.
+   0 means the sail is fully in, and 90 means the sail is 
+   fully out (at 90 degrees).
+   Note that the Sail Servo actual positions for full in and out are approx 55 and 125, 
+   so the user's desired angles must be mapped in the code to these values.
+*/
 
 #include <Servo.h>
 
@@ -13,25 +21,20 @@ int pos = 0;
 
 void setup() {
   // Sets up communication with the serial monitor
-  Serial.begin(115200);
+  Serial.begin(9600);
 
   // Tell Serial to wait for this long in order to receive a number
   Serial.setTimeout(1000 * 60 * 60);
 
   sailServo.attach(ROBOSAIL_PIN_SAIL_SERVO);
 
-  // Give the user some time to set up the serial monitor
-  delay(5000);
 }
 
 void loop() {
   Serial.print("Enter desired sail angle (0 to 90): ");
 
-  // convert input to integer
-  pos = Serial.parseInt();
-
-  // print what was entered
-  Serial.print(pos);
+  pos = Serial.parseInt();    // convert input to integer
+  Serial.print(pos);          // print what was entered
 
   // convert from desired sail angle to servo angle
   pos = map(pos, 0, 90, 55, 125);

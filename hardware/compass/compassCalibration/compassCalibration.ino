@@ -1,3 +1,7 @@
+/* CompassCalibration rev 6/29/2015
+© 2014-2015 RoboSail
+Use this program to get hardiron calibration values to use in other programs.
+ 
 /* Compass Calibration Instructions
  * Hard iron calibration must be performed before you can get accurate compass readings.
  *
@@ -58,7 +62,7 @@ void displaySensorDetails()
 
 void setup(void) 
 {
-  Serial.begin(115200);
+  Serial.begin(9600);
   Serial.println("Magnetometer Hard Iron Calibration"); Serial.println("");
   
   /* Enable auto-gain */
@@ -68,7 +72,7 @@ void setup(void)
   if(!mag.begin())
   {
     /* There was a problem detecting the LSM303 ... check your connections */
-    Serial.println("Ooops, no LSM303 detected ... Check your wiring!");
+    Serial.println("No LSM303 detected ... Check the wiring");
     while(1);
   }
   
