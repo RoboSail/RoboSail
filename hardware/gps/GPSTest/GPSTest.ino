@@ -1,4 +1,4 @@
-/* GPSTest rev 6/28/2015
+/* GPSTest rev 7/22/2015
 © 2014-2015 RoboSail
 This program reads the GPS module through the Arduino Mega. 
 It also test the libraries that convert the GPS latitude/longitude data (in degrees) 
@@ -11,7 +11,7 @@ When the GPS first gets a "fix" on position, that position is defined as the 0,0
 Future positions are relative to (0,0) as on an x,y plane. 
 To change the (0,0) take the GPS to another spot and press the reset button  to a new (Need to rdefine the  on the Uno) control signals coming in from the Receiver and
 
-To run this code with the Arduino Uno, chane "Serial1" to "Serial" 
+To run this code with the Arduino Uno, change "Serial1" to "Serial" 
 
 */
 
@@ -36,12 +36,15 @@ bool start_pos_found = false;
 // once GPS fix is found, these variables will be updated
 float startPositionX = 0;
 float startPositionY = 0;
+float relPositionX = 0;
+float relPositionY = 0;
 float pos[2];
+float angleFromStart = 0;
 
 void setup()
 {
   // initialize Serial console
-  Serial.begin(9600);
+  Serial.begin(115200);
   Serial.println("GPS test code");
   Serial.println();
 
@@ -84,9 +87,12 @@ void loop() // run over and over again
         calc.latLonToUTM(GPS.latitudeDegrees, GPS.longitudeDegrees, pos);
         
         // calculate the boat position relative to where it was started
-        float relPositionX = pos[0] - startPositionX;
-        float relPositionY = pos[1] - startPositionY;
-        
+        relPositionX = pos[0] - startPositionX;
+        relPositionY = pos[1] - startPositionY;
+        angleFromStart = atan2(relPositionY, relPositionX) * 180 / 3.14;
+        while (angleFromStart < 0){ angleFromStart += 360; }
+        while (angleFromStart > 360){ angleFromStart -= 360; }
+
         Serial.print("x = "); Serial.print(relPositionX);
         Serial.print("   y = "); Serial.println(relPositionY);
       }
@@ -100,6 +106,7 @@ void loop() // run over and over again
         Serial.println("Starting position found!");
         Serial.print("x = "); Serial.print(startPositionX);
         Serial.print("   y = "); Serial.println(startPositionY);
+        Serial.print("  angle from start = "); Serial.println(angleFromStart);
         Serial.println();
         
         start_pos_found = true;
@@ -136,7 +143,7 @@ void PrintGPSInfo()
     Serial.print(", ");
     Serial.println(GPS.longitudeDegrees, 4);
     Serial.print("Speed (knots): "); Serial.println(GPS.speed);
-    Serial.print("Angle: "); Serial.println(GPS.angle);
+    Serial.print("GPS Angle: "); Serial.println(GPS.angle);
     Serial.print("Altitude: "); Serial.println(GPS.altitude);
     Serial.print("Satellites: "); Serial.println((int)GPS.satellites);
   }

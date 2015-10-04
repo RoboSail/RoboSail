@@ -32,10 +32,13 @@ This code uses the orientation.cpp library where the calculations are done.
 
 // These values will need to be adjusted based on your particular compass.
 // Use compassCalibration (in the Orientation library) to determine the correct hard iron calibration.
-float hardiron_x = -11.91;
-float hardiron_y = 5.05;
-float hardiron_z = -1.02;
-
+//float hardiron_x = -11.91;
+//float hardiron_y = 5.05;
+//float hardiron_z = -1.02;
+//Data from 7/29 BLI Hard iron calibration for X: -8.41 for Y: -8.00 for Z: 33.32
+float hardiron_x = -8.41;
+float hardiron_y = -8.00;
+float hardiron_z = 33.32;
 // Source: http://www.ngdc.noaa.gov/geomag-web/#igrfwmm
 float declination = -14.6067;
 
@@ -69,7 +72,7 @@ void displaySensorDetails()
 
 void setup(void) 
 {
-  Serial.begin(9600);
+  Serial.begin(115200);
   Serial.println("Magnetometer + Accelerometer Test with Hard Iron Calibration and Tilt Correction"); Serial.println("");
   
   /* Enable auto-gain */

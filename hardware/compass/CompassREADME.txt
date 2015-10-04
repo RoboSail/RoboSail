@@ -16,9 +16,10 @@ In the "hardware/compass" folder:
 
 compassBasic - Raw accelerometer and magnetometer readings and prints to the screen
 compassCalibration - Code to use to determine hard iron calibration
-compassBasicwithCalibration - hard iron and axis orientation correction (same as CompassTest with hardiron correction)
-compassTest - Example of how to use Orientation library (get values from compassCalibration first)
-compassBasicwithCalibrationandTilt - roll, pitch, yaw, and heading
+compassBasicwithCalibration - hard iron and axis orientation correction (same as CompassBasic with hardiron correction)
+compassTest - Calculates roll, pitch, yaw, and heading using the Orientation library (get values from compassCalibration first)
+compassBasicwithCalibrationandTilt - Calculates roll, pitch, yaw, and heading same as CompassTest, 
+	but does it in the code and does NOT require the orientation library
 
 
 The roll, pitch, yaw, and headings all use the standard (Aircraft)

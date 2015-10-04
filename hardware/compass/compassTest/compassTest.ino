@@ -1,4 +1,4 @@
-/* CompassTest rev 6/29/2015
+/* CompassTest rev 7/22/2015
 © 2014-2015 RoboSail
 Use this program after getting hardiron calibration values from compassCalibration.
 Edit the code here and enter the hardiron calibration factors.
@@ -18,9 +18,11 @@ It also tests the orientation.cpp library where the calculations are done.
 
 // These values will need to be adjusted based on your particular compass.
 // Use compassCalibration to determine the correct hard iron calibration.
-float hardiron_x = -11.91;
-float hardiron_y = 5.05;
-float hardiron_z = -1.02;
+// Data from 7/26/15 Hard iron calibration for X: -1.59 for Y: -7.18 for Z: 34.44
+//Data from 7/29 BLI Hard iron calibration for X: -8.41 for Y: -8.00 for Z: 33.32
+float hardiron_x = -8.41;
+float hardiron_y = -8.00;
+float hardiron_z = 33.32;
 
 // Source: http://www.ngdc.noaa.gov/geomag-web/#igrfwmm
 float declination = -14.6067;
@@ -36,7 +38,7 @@ float heading;
 float robosailHeading;
 
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(115200);
   Serial.println("RoboSail Compass Test"); Serial.println("");
   
   /* Initialise the sensor */
@@ -66,6 +68,6 @@ void loop() {
   Serial.print(", Yaw: "); Serial.print(yaw);
   Serial.print(",   Compass Heading: "); Serial.print(heading); Serial.print(" °");
   Serial.print(",   RoboSail Heading: "); Serial.print(robosailHeading); Serial.println(" °");
-  delay(500);
+  delay(300);
 }
 

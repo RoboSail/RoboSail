@@ -1,4 +1,4 @@
-/* CompassCalibration rev 6/29/2015
+/* CompassCalibration rev 7/22/2015
 © 2014-2015 RoboSail
 Use this program to get hardiron calibration values to use in other programs.
  
@@ -57,12 +57,12 @@ void displaySensorDetails()
   Serial.print  ("Resolution:   "); Serial.print(sensor.resolution); Serial.println(" uT");  
   Serial.println("------------------------------------");
   Serial.println("");
-  delay(500);
+  delay(300);
 }
 
 void setup(void) 
 {
-  Serial.begin(9600);
+  Serial.begin(115200);
   Serial.println("Magnetometer Hard Iron Calibration"); Serial.println("");
   
   /* Enable auto-gain */
@@ -92,21 +92,24 @@ void loop(void)
   float y = mag_event.magnetic.y - magYcal;
   float z = mag_event.magnetic.z - magZcal;
   
-  if ((millis() - lastPrint) > 2000)
+  if ((millis() - lastPrint) > 500)
   {
      /* Display the results (magnetic vector values are in micro-Tesla (uT)) */
-    Serial.print("X: ");
-    Serial.print(magXrange[0]); Serial.print(" < "); Serial.print(magXcal); Serial.print(" < "); Serial.print(magXrange[1]);
-    Serial.print(" : "); Serial.print(x); Serial.print(" ("); Serial.print(mag_event.magnetic.x); Serial.print(") ");
-  
-    Serial.print("Y: ");
-    Serial.print(magYrange[0]); Serial.print(" < "); Serial.print(magYcal); Serial.print(" < "); Serial.print(magYrange[1]);
-    Serial.print(" : "); Serial.print(y); Serial.print(" ("); Serial.print(mag_event.magnetic.y); Serial.print(") ");
-    
-    Serial.print("Z: ");
-    Serial.print(magZrange[0]); Serial.print(" < "); Serial.print(magZcal); Serial.print(" < "); Serial.print(magZrange[1]);
-    Serial.print(" : "); Serial.print(z); Serial.print(" ("); Serial.print(mag_event.magnetic.z); Serial.println(") ");
-    
+//    Serial.print("X: ");
+//    Serial.print(magXrange[0]); Serial.print(" < "); Serial.print(magXcal); Serial.print(" < "); Serial.print(magXrange[1]);
+//    Serial.print(" : "); Serial.print(x); Serial.print(" ("); Serial.print(mag_event.magnetic.x); Serial.print(") ");
+//  
+//    Serial.print("Y: ");
+//    Serial.print(magYrange[0]); Serial.print(" < "); Serial.print(magYcal); Serial.print(" < "); Serial.print(magYrange[1]);
+//    Serial.print(" : "); Serial.print(y); Serial.print(" ("); Serial.print(mag_event.magnetic.y); Serial.print(") ");
+//    
+//    Serial.print("Z: ");
+//    Serial.print(magZrange[0]); Serial.print(" < "); Serial.print(magZcal); Serial.print(" < "); Serial.print(magZrange[1]);
+//    Serial.print(" : "); Serial.print(z); Serial.print(" ("); Serial.print(mag_event.magnetic.z); Serial.println(") ");
+
+    Serial.print("Hard iron calibration for X: "); Serial.print(magXcal); 
+    Serial.print(" for Y: "); Serial.print(magYcal); 
+    Serial.print(" for Z: "); Serial.println(magZcal);     
     lastPrint = millis();
   }
 }

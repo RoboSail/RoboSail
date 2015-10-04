@@ -40,11 +40,8 @@ void displaySensorDetails()
 
 void setup(void) 
 {
-  Serial.begin(9600);
+  Serial.begin(115200);
   Serial.println("Magnetometer + Accelerometer Test"); Serial.println("");
-  
-  /* Enable auto-gain */
-  mag.enableAutoRange(true);
   
   /* Initialise the sensor */
   if(!mag.begin() || !accel.begin())
@@ -53,7 +50,8 @@ void setup(void)
     Serial.println("Ooops, no LSM303 detected ... Check your wiring!");
     while(1);
   }
-  
+    /* Enable auto-gain */
+  mag.enableAutoRange(true);
   /* Display some basic information on this sensor */
   displaySensorDetails();
 }
