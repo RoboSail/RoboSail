@@ -1,5 +1,5 @@
-/* WindSensor rev 7/21/2015
-© 2014-2015 RoboSail
+/* WindSensor rev 3/28/2016
+© 2014-2016 RoboSail
 This program reads and displays data from the wind sensor, a continuous rotary 
 magnetic encoder with a 10 bit PWM output. (US Digital MA3-P10-25B)
 It is used to verify that the sensor is connected and functioning correctly
@@ -19,7 +19,7 @@ You will need a set of pliers and probably several tries.
 */
 
 // Pin assignments
-const int ROBOSAIL_PIN_WIND = 7; 
+const int WIND_PIN = 7; 
 
 int windAngle = 0;
 int windPulseWidth = 0;
@@ -28,13 +28,13 @@ void setup() {
   Serial.begin(115200);
 
   // Set WindSensor on digital input pins
-  pinMode(ROBOSAIL_PIN_WIND, INPUT);
+  pinMode(WIND_PIN, INPUT);
 }
 
 void loop() {
   // Read values from the WindSensor
   // pulseIn returns the width of the command pulse in microseconds.
-  windPulseWidth = pulseIn(ROBOSAIL_PIN_WIND, HIGH);
+  windPulseWidth = pulseIn(WIND_PIN, HIGH);
   
   // Convert the wind angle to degrees from PWM.  Range -180 to +180
   windAngle = map(windPulseWidth, 0, 1024, 180, -180);

@@ -1,5 +1,5 @@
-/* RCPassthrough rev 7/22/2015
-© 2014-2015 RoboSail
+/* RCPassthrough rev 3/28/2016
+© 2014-2016 RoboSail
 This program puts the Arduino micro-computer in the RC (Radio Control)system 
 It takes in the control signals coming in from the Receiver and
 pass them back to the Rudder and Sail servo motors on the boat.
@@ -24,12 +24,12 @@ pins 8 and 9 respectively.
 
 // Pin assignments
 //input pins from receiver
-const int ROBOSAIL_PIN_RUDDER_RC = 2;
-const int ROBOSAIL_PIN_SAIL_RC = 3;
+const int RUDDER_RC_PIN = 2;
+const int SAIL_RC_PIN = 3;
 
 // Output pins to the servos
-const int ROBOSAIL_PIN_RUDDER_SERVO = 8;
-const int ROBOSAIL_PIN_SAIL_SERVO = 9;
+const int RUDDER_SERVO_PIN = 8;
+const int SAIL_SERVO_PIN = 9;
 
 // variables to hold input and output values
 int rudderPulseWidth;
@@ -43,24 +43,24 @@ Servo sailServo;
 
 void setup() {
   Serial.begin(115200);
-  Serial.println("\nRCPassthrough code - RoboSail");
+  Serial.println("\nRCPassThrough code - RoboSail");
   // Set RC receiver on digital input pins
-  pinMode(ROBOSAIL_PIN_RUDDER_RC, INPUT);
-  pinMode(ROBOSAIL_PIN_SAIL_RC, INPUT);
+  pinMode(RUDDER_RC_PIN, INPUT);
+  pinMode(SAIL_RC_PIN, INPUT);
 
   // attach the servos to the proper pins
-  rudderServo.attach(ROBOSAIL_PIN_RUDDER_SERVO);
-  sailServo.attach(ROBOSAIL_PIN_SAIL_SERVO);
+  rudderServo.attach(RUDDER_SERVO_PIN);
+  sailServo.attach(SAIL_SERVO_PIN);
 }
 
 void loop() {
   // Read commanded (manual) values from the RC reciever
   // pulseIn returns the width of the command pulse in microseconds.
-  rudderPulseWidth = pulseIn(ROBOSAIL_PIN_RUDDER_RC, HIGH);
+  rudderPulseWidth = pulseIn(RUDDER_RC_PIN, HIGH);
   // Calculate the servo position in degrees.
   rudderServoOut = map(rudderPulseWidth, 1000, 2000, -60, 60);
 
-  sailPulseWidth = pulseIn(ROBOSAIL_PIN_SAIL_RC, HIGH);
+  sailPulseWidth = pulseIn(SAIL_RC_PIN, HIGH);
   sailServoOut = map(sailPulseWidth, 1090, 1900, 0, 90);
 
  
@@ -73,9 +73,7 @@ void loop() {
   Serial.print("\t Sail pulse from receiver: ");
   Serial.print(sailPulseWidth);
   Serial.print("\t Mapped Angle: ");
-  Serial.print(sailServoOut);
-
-  Serial.print("\n"); // Print a new line
+  Serial.println(sailServoOut);
  
   // adjust the servo values from desired angles on the Robosail boat 
   // to appropriate values for the servos, then command the servos to move 

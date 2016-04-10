@@ -1,5 +1,5 @@
-/* SailServoTest rev 7/22/2015
-   © 2014-2015 RoboSail
+/* SailServoTest rev 3/28/2016
+   © 2014-2016 RoboSail
    Test the various sail positions available by driving the
    sail servo to positons entered by the user.
    The user types in the desired angle through the Serial Monitor.
@@ -15,18 +15,18 @@
 
 #include <Servo.h>
 
-const int ROBOSAIL_PIN_SAIL_SERVO = 9;
+const int SAIL_SERVO_PIN = 9;
 
 Servo sailServo;    // define servo 
 
 // variable to store the servo position
-int pos = 0;
+int position = 0;
 
 void setup() {
   // Sets up communication with the serial monitor
   Serial.begin(115200);
 
-  sailServo.attach(ROBOSAIL_PIN_SAIL_SERVO);
+  sailServo.attach(SAIL_SERVO_PIN);
 
 }
 
@@ -34,18 +34,18 @@ void loop() {
   Serial.print("Enter desired sail angle (0 to 90): ");
   while (Serial.available() == 0) 
   {}
-  pos = Serial.parseInt();    // convert input to integer
-  Serial.println(pos);          // print what was entered
+  position = Serial.parseInt();    // convert input to integer
+  Serial.println(position);          // print what was entered
 
   // convert from desired sail angle to servo angle
-  pos = map(pos, 0, 90, 55, 125);
+  position = map(position, 0, 90, 55, 125);
   
   // print the converted value
   Serial.print("Comand sent to Servo: ");
-  Serial.println(pos);
+  Serial.println(position);
   Serial.println();
 
-  // drive servo to position in variable 'pos'
-  sailServo.write(pos);
+  // drive servo to position in variable 'position'
+  sailServo.write(position);
 }
 

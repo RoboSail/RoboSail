@@ -1,11 +1,16 @@
-// This program reads an integer fron the Serial Monitor
-// and displays it back to the screen
+/* SerialInputNumber rev 3/28/2016
+© 2014-2016 RoboSail
+This program reads an integer fron the Serial Monitor
+and displays it back to the screen
+Set the Serial Monitor settings in lower right corner 
+to "Both NL & CR" and "115200 baud"
+*/
 
 int x = 0;
 
 void setup() {
   // Sets up communication with the serial monitor
-  Serial.begin(9600);
+  Serial.begin(115200);
 
   // Set the serial timeout so that it waits for a sufficiently long time (1 hour)
   Serial.setTimeout(1000 * 60 * 60);
