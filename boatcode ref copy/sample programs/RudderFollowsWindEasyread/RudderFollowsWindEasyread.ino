@@ -1,4 +1,4 @@
-/* BoatCodeStarterWindOnly rev 4/8/2016
+/* RudderFollowsWind rev 4/8/2016
 © 2014-2016 RoboSail
 Find detailed description in Decription tab
 */
@@ -20,16 +20,16 @@ void loop() {
 //*********** Read in data from the RC receiver and sensors *********
 readReceiverSensors();
 
-// You now have values from the RC Receiver and Sensors in these variable: 
+//**************** your code here ******************
+// You have values from the RC Receiver and Sensors in these variable: 
 // rudderPosition, sailPosition, and windAngle
 // Calculate new values for rudderPosition and sailPosition in degrees 
 // and set those variables to the new values.
 // If you do not set the values, it will use the values from the RC Receiver
 // For example, to make the rudder follow the wind angle you would have:
 // rudderPosition = windAngle;
-//**************** your code here ******************
 
-
+rudderPosition = windAngle;
   
 /********************* send commands to motors *************************/
   driveSailServo(sailPosition);

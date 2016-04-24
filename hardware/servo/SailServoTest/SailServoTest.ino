@@ -16,7 +16,6 @@
 #include <Servo.h>
 
 const int SAIL_SERVO_PIN = 9;
-
 Servo sailServo;    // define servo 
 
 // variable to store the servo position
@@ -25,9 +24,7 @@ int position = 0;
 void setup() {
   // Sets up communication with the serial monitor
   Serial.begin(115200);
-
   sailServo.attach(SAIL_SERVO_PIN);
-
 }
 
 void loop() {
@@ -37,6 +34,10 @@ void loop() {
   position = Serial.parseInt();    // convert input to integer
   Serial.println(position);          // print what was entered
 
+  // drive servo to position in variable 'position'
+  //call function to do error checking and send command to servo
+  driveSailServo(position);      
+    
   // convert from desired sail angle to servo angle
   position = map(position, 0, 90, 55, 125);
   
@@ -44,8 +45,5 @@ void loop() {
   Serial.print("Comand sent to Servo: ");
   Serial.println(position);
   Serial.println();
-
-  // drive servo to position in variable 'position'
-  sailServo.write(position);
 }
 

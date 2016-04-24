@@ -1,24 +1,17 @@
-/* AutoRudder-POS with Switch - Sample code 1/19/2016
-© 2014-2016 RoboSail
-This program contains code for a boat to sail to 
-a specified Point of Sail (POS) using information from the Wind Sensor.
-Rudder control can be manual or automatic, determined by the 
-Sail control lever.
+/* BoatCodeStarterWindOnly rev 9/4/2015
+© 2014-2015 RoboSail
+This program contains starter code for programming a boat 
+using information from the Wind Sensor.
 For detailed information about getting input from the WindSensor,
 input from the RC receiver, and sending output to the Servos,
-see these programs: WindSensor and RCPassThrough
-Sail control is always automatic.
-The variable "automatic" sets the rudder to automatic.
-The variable "POS" holds a specified point of sail.
+see these programs: WindSensor and RCPassThroughSimple
+
 Program values are displayed to the Serial Monitor when the 
 variable "verbose" is set to true.  otherwise set verbose to false.
 */
 
 #include <Servo.h>
-
-boolean automatic = true; // set to true for automatic rudder
 boolean verbose = true;  //true calls function for values to be printed to monitor
-int POS=90; // desired wind angle
 
 //determine these values using the hardware test programs and fill in the appropriate values
 int RUDDER_HIGH = 1900;   //nominal 2000
@@ -28,29 +21,31 @@ int SAIL_LOW = 1000;     //nominal 1000
 int WIND_HIGH = 1023;    //nominal 1023
 
 // Pin assignments
-int WIND_PIN = 7;         // Wind sensor pin
-int RUDDER_RC_PIN = 2;    //input pins from receiver
+int WIND_PIN = 7; 
+//input pins from receiver
+int RUDDER_RC_PIN = 2;
 int SAIL_RC_PIN = 3;
-int RUDDER_SERVO_PIN = 8; // Output pins to the servos
+// Output pins to the servos
+int RUDDER_SERVO_PIN = 8;
 int SAIL_SERVO_PIN = 9;
-//************************//create servo objects
-Servo rudderServo;
-Servo sailServo;
-//************************// variables to hold input and output values
+// variables to hold input and output values
 int rudderPulseWidth;
 int rudderServoOut;
 int sailPulseWidth;
 int sailServoOut;
-//************************//variables for WindSensor
+//variables for WindSensor
 int windAngle = 0;
 int windPulseWidth = 0;
 int rudderPosition = 0;
 int sailPosition = 45;
 
-/****************************** SETUP ******************/
+//create servo objects
+Servo rudderServo;
+Servo sailServo;
+
 void setup() {
   Serial.begin(115200);
-  Serial.println("\nRoboSail BoatCode - AutoRudderPOS with Switch");  //write program name here
+  Serial.println("\nRoboSail BoatCode - XXXXX");  //write program name here
   // Set RC receiver and WindSensor on digital input pins
   pinMode(RUDDER_RC_PIN, INPUT);
   pinMode(SAIL_RC_PIN, INPUT);
@@ -67,14 +62,14 @@ void loop() {
   rudderPulseWidth = pulseIn(RUDDER_RC_PIN, HIGH);
   sailPulseWidth = pulseIn(SAIL_RC_PIN, HIGH);
   // Calculate the servo position in degrees.
-  sailPosition = map(sailPulseWidth, SAIL_LOW, SAIL_HIGH, 0, 90);
   rudderPosition = map(rudderPulseWidth, RUDDER_LOW, RUDDER_HIGH, -60, 60);
+  sailPosition = map(sailPulseWidth, SAIL_LOW, SAIL_HIGH, 0, 90);
   
   // Read values from the WindSensor
   windPulseWidth = pulseIn(WIND_PIN, HIGH);
   // Convert the wind angle to degrees from PWM.  Range -180 to +180
   windAngle = map(windPulseWidth, 0, WIND_HIGH, 180, -180);
-  windAngle = constrain(windAngle, -180, 180);  // gets rid of noisy readings
+  windAngle = constrain(windAngle, -180, 180);
 
 //**************** your code here ******************
 // calculate your values for rudderPosition and sailPosition in degrees 
@@ -83,26 +78,9 @@ void loop() {
 // For example, to make the rudder follow the wind angle you would have:
 // rudderPosition = windAngle;
 
-/*******************  always set sail angle automatically *******************/
 
-// sailPosition = (180-abs(windAngle))/2;  // a different algorithm for automatic sail 
 
-if (sailPulseWidth > 1850){automatic = true;} // use sail lever "full up" to set automatic
-else {automatic = false;}
-
-if (automatic)
-  {
-   rudderPosition = POS-windAngle;
-   if (rudderPosition > 60) rudderPosition = 60;
-   if (rudderPosition < -60) rudderPosition = -60;
-    // rudderPosition = min(max((POS-windAngle),-60),60);  // alternate statement
-  }
- // if automatic = false rudderPosition will be set by RC transmitter signal  
- 
- windAngle = abs(windAngle);           // sail position can only be positive
-if (windAngle < 45) sailPosition = 0;
-if ((windAngle >= 45) && (windAngle < 135)) sailPosition = windAngle - 45;
-if (windAngle >= 135) sailPosition = 90;
+  
 /********************* send commands to motors *************************/
   driveSailServo(sailPosition);
   driveRudderServo(rudderPosition);
@@ -150,9 +128,6 @@ void driveRudderServo(int rudderPos)
 // Function to Print out all values for debug.
 void printToMonitor()
 {
-  Serial.print("Mode: ");
-  if (automatic) Serial.println("automatic rudder");
-  else Serial.println("manual rudder");
   Serial.print("Wind Angle: ");
   Serial.print(windAngle);
  

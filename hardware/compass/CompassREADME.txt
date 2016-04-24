@@ -1,26 +1,17 @@
 How to use Electronic Compass for RoboSail boats
 using Adafruit LSM303 3-axis magnetometer and 3-axis accelerometer
- 1 basic operation to verify hardware and connections (compassBasic)
- 2 hard-iron calibration program to get values for other programs (compassCalibration)
- 3 basic operation with hard-iron calibration (compassBasicwithCalibration)
- 4 basic operation with hard-iron calibration and Orientation library (compassTest)
- 5 tilt-compensated operation (compassBasicwithCalibrationandTilt)
 
-In the "Libraries/Orientation" folder:
+Find these programs in the "hardware --> compass" folder and use in this order:
 
-Orientation.cpp - Library for tilt calibrated compass readings
-Orientation.h - Header file for library
+1. compassBasic - verify hardware and connections prints raw accelerometer and magnetometer readings to the screen
+2. compassCalibration - Code to use to determine hard iron calibration values for other the programs
+3. compassBasicwithCalibration - same as CompassBasic with hardiron correction
+4. compassTest - Tilt-compensated compass with hard-iron correction.  Uses the Orientation library
+5. compassBasicwithCalibrationandTilt - same as CompassTest, but does the tilt-compensation in the code and does NOT require the orientation library
 
-
-In the "hardware/compass" folder:
-
-compassBasic - Raw accelerometer and magnetometer readings and prints to the screen
-compassCalibration - Code to use to determine hard iron calibration
-compassBasicwithCalibration - hard iron and axis orientation correction (same as CompassBasic with hardiron correction)
-compassTest - Calculates roll, pitch, yaw, and heading using the Orientation library (get values from compassCalibration first)
-compassBasicwithCalibrationandTilt - Calculates roll, pitch, yaw, and heading same as CompassTest, 
-	but does it in the code and does NOT require the orientation library
-
+Find Orientation libraries in the folder Libraries --> Orientation:
+	Orientation.cpp - Library for tilt calibrated compass readings
+	Orientation.h - Header file for library
 
 The roll, pitch, yaw, and headings all use the standard (Aircraft)
 orientations:
@@ -36,7 +27,7 @@ Heading ranges from 0 to 360 degrees.
 A heading of 0 degrees is pointing towards True North.
 A heading of 90 degrees is pointing East, 180 is South, 270 is West.
 
-For RoboSail we change to a different fram of reference where East is 0 deg,
+For RoboSail we change to a different frame of reference where East is 0 deg,
 North is 90 deg, West ia 180 deg, and South is 270 deg. To get this do 
 RoboSailHeading = (360 - heading) + 90
 We also use roll to find the heel of the boat.  
