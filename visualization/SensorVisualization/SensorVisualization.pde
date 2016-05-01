@@ -11,7 +11,7 @@
  */
 // TODO: animated camera angle
 //       get yaw working (or is it already working?)
-//       incorporate rudder and sail angles
+//       incorporate sail angle
 //       better-looking boat
 //       fix lighting
 //       clean up Camera class - camera() vs. perspective() approach
@@ -60,7 +60,12 @@ void draw()
   camera.defineCamera();
   axes.draw();
   water.draw();
-  sailboat.drawRPY(serialParser.roll, serialParser.pitch, serialParser.yaw);
+  
+  // send the updated parameters to the sailboat, and draw it
+  sailboat.setWindDirection(serialParser.windDirectionDeg);
+  sailboat.setRudderAngle(serialParser.rudderAngleDeg);
+  sailboat.drawRPY(serialParser.rollDeg, serialParser.pitchDeg, serialParser.yawDeg);
+  
   drawHUD();
 }
 
@@ -78,9 +83,10 @@ void drawHUD()
   String deg = str(char(176));
   
   hud.clear();
-  hud.add("Roll", degrees(serialParser.roll), deg);
-  hud.add("Pitch", degrees(serialParser.pitch), deg);
-  hud.add("Yaw", degrees(serialParser.yaw), deg);
-  hud.add("Wind dir.", serialParser.windDirection, deg);
+  hud.add("Roll", serialParser.rollDeg, deg);
+  hud.add("Pitch", serialParser.pitchDeg, deg);
+  hud.add("Yaw", serialParser.yawDeg, deg);
+  hud.add("Wind dir.", serialParser.windDirectionDeg, deg);
+  hud.add("Rudder dir.", serialParser.rudderAngleDeg, deg);
   hud.draw();
 }

@@ -17,7 +17,12 @@ public class Arrow
   {
     this.vector = vector;
     this.c = c;
-  } 
+  }
+  
+  void setVector(PVector vector)
+  {
+    this.vector = vector;
+  }
   
   void draw()
   {
@@ -50,7 +55,7 @@ public class Arrow
       
     // draw the tip (cone)
     translate(0, -arrowLength, 0);
-    truncCone.draw(0, 10, tipLength, 16);
+    truncCone.draw(10, 0, tipLength, 16);
     
     // draw the stem (cylinder)
     translate(0, tipLength, 0);

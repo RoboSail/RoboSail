@@ -11,7 +11,7 @@ import processing.opengl.*;
 public class TruncCone
 {
   // draws in alignment with the Y axis, starting at origin and moving in the positive Y direction
-  void draw(float topRadius, float bottomRadius, float tall, int sides) 
+  void draw(float bottomRadius, float topRadius, float tall, int sides) 
   {
     float angle = 0;
     float angleIncrement = TWO_PI / sides;

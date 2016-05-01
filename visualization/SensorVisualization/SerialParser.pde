@@ -16,13 +16,13 @@ public abstract class SerialParser
   protected final int space = 32;
   protected final int comma = 44;
   
-  // parsed, in radians
-  public float roll;
-  public float pitch;
-  public float yaw;
-  public float windDirection;
-  public float rudderAngle;
-  public float sailAngle;
+  // parsed, in degrees
+  public float rollDeg;
+  public float pitchDeg;
+  public float yawDeg;
+  public float windDirectionDeg;
+  public float rudderAngleDeg;
+  public float sailAngleDeg;
 
   SerialParser(PApplet parent, String comPort)
   {

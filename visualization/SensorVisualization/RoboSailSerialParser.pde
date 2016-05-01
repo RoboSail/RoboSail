@@ -48,7 +48,7 @@ public class RoboSailSerialParser extends SerialParser
             
             if (variable == "wind Angle")
             {
-              windDirection = radians(value);
+              windDirectionDeg = value;
             }
             else if (variable == "rudder angle out")
             {
@@ -58,15 +58,15 @@ public class RoboSailSerialParser extends SerialParser
             }
             else if (variable == "roll")
             {
-              roll = radians(value);
+              rollDeg = value;
             }
             else if (variable == "pitch")
             {
-              roll = radians(value);
+              rollDeg = value;
             }
             else if (variable == "yaw")
             {
-              roll = radians(value);
+              rollDeg = value;
             }
             // else data we don't care about - just keep parsing...          
           }
