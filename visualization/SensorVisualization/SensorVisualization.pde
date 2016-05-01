@@ -11,15 +11,19 @@
  */
 // TODO: animated camera angle
 //       get yaw working (or is it already working?)
-//       comments/cleanup
+//       incorporate rudder and sail angles
 //       better-looking boat
 //       fix lighting
-//       public/private class members?
 //       clean up Camera class - camera() vs. perspective() approach
 //       clean up Sailboat class - RPY function
 //
 import processing.serial.*;
 import processing.opengl.*;
+
+////////////////////////////////////////
+// change this as appropriate:
+String comPort = "COM7";
+////////////////////////////////////////
 
 SerialParser serialParser;
 Camera camera;
@@ -34,7 +38,8 @@ void setup()
 {
   size(1024, 768, P3D);
 
-  serialParser = new SerialParser(this, "COM7"); // must be after size()
+  //serialParser = new JoypadSerialParser(this, comPort); // for debugging/writing without equipment
+  serialParser = new RoboSailSerialParser(this, comPort); // must be after size()
   axes = new Axes(300, 200, 300);
   sailboat = new Sailboat(new PVector(150, 0, 150));
   water = new Extrusion(axes.xMax, axes.zMax);
@@ -76,6 +81,6 @@ void drawHUD()
   hud.add("Roll", degrees(serialParser.roll), deg);
   hud.add("Pitch", degrees(serialParser.pitch), deg);
   hud.add("Yaw", degrees(serialParser.yaw), deg);
-  hud.add("Wind dir.", 0, deg);
+  hud.add("Wind dir.", serialParser.windDirection, deg);
   hud.draw();
 }
