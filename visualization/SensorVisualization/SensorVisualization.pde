@@ -13,7 +13,6 @@
 //       get yaw working (or is it already working?)
 //       incorporate sail angle
 //       better-looking boat
-//       fix lighting
 //       clean up Camera class - camera() vs. perspective() approach
 //       clean up Sailboat class - RPY function
 //
@@ -54,10 +53,9 @@ void setup()
 // drawing function (called for every frame)
 void draw()
 {
+  camera.defineCamera();
   background(backgroundImage);
   lights();
-
-  camera.defineCamera();
   axes.draw();
   water.draw();
   

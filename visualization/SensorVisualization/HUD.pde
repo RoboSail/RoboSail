@@ -40,6 +40,7 @@ public class HUD
     color c;
 
     pushStyle();
+    fill(color(255));
     textMode(SCREEN);
     
     x = width - border - w;
