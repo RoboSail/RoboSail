@@ -46,15 +46,17 @@ public class RoboSailSerialParser extends SerialParser
           {
             value = float(trim(variableAndValue[1]));
             
-            if (variable == "wind Angle")
+            if (variable == "wind angle")
             {
-              windDirectionDeg = value;
+              windAngleDeg = value;
             }
             else if (variable == "rudder angle out")
             {
+              rudderAngleDeg = value;
             }
             else if (variable == "sail angle out")
             {
+              sailAngleDeg = value;
             }
             else if (variable == "roll")
             {

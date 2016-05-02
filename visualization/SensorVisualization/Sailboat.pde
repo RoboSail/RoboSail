@@ -11,8 +11,17 @@ import processing.opengl.*;
 public class Sailboat
 {
   private PVector location;
+  private float windAngleDeg;
   private Arrow windDirection;
   private float rudderAngleDeg;
+  // this should always be a positive number - the sail angle set by the client code
+  // should be between 0 and 90 degrees, as the client only really knows how far the 
+  // the sheet has been let out - within this class, we will calculate the "real" 
+  // sail angle, based on the wind direction
+  private float sailAngleDeg;
+  private float rollDeg;
+  private float pitchDeg;
+  private float yawDeg;
   
   Sailboat(PVector location)
   {
@@ -23,7 +32,7 @@ public class Sailboat
   }
   
   // draws a sailboat model with origin at the center of the hull
-  void draw()
+  void drawBasic()
   {
     float sailHeight = 30;
     float hullHeight = 10;
@@ -50,6 +59,9 @@ public class Sailboat
     fill(color(240, 240, 240));
     pushMatrix();
     translate(0, hullHeight/2 + hullHeight/3, 0);
+    translate(0, 0, 15);
+    rotateY(radians(getRealSailAngle())); // rotate by the sail angle
+    translate(0, 0, -15);
     scale(0.2, 1, 1.8); // squish the shape into a sail
     truncCone.draw(0, 10, sailHeight, 16);
     popMatrix();
@@ -60,7 +72,9 @@ public class Sailboat
     fill(color(240, 240, 0));
     pushMatrix();
     translate(0, -rudderHeight, -20);
+    translate(0, 0, 5);
     rotateY(radians(rudderAngleDeg)); // rotate by the rudder angle
+    translate(0, 0, -5);
     scale(0.1, 1, 0.4); // squish the shape into a rudder
     truncCone.draw(10, 5, rudderHeight, 16);
     popMatrix();
@@ -69,28 +83,24 @@ public class Sailboat
     popMatrix();
   }
   
-  // draw the sailboat with roll/pitch/yaw arguments
-  // roll, pitch, and yaw in degrees
-  // TODO: clean this up, move roll/pitch/yaw rotations outside of sailboat class
-  void drawRPY(float roll, float pitch, float yaw)
+  // draw the sailboat, accounting for location, roll/pitch/yaw, and wind arrow
+  void draw()
   {
     pushMatrix();
     noStroke();
   
-    fill(color(220, 120, 0));
-  
     translate(location.x, location.y, location.z);
     
     // roll: rotation about the Z axis
-    rotateArb(radians(roll), 0, 0, 1);
+    rotateArb(radians(rollDeg), 0, 0, 1);
   
     // pitch: rotation about the X axis
-    rotateArb(radians(pitch), 1, 0, 0);
+    rotateArb(radians(pitchDeg), 1, 0, 0);
   
     // yaw: rotation about the Y axis
-    rotateArb(radians(yaw), 0, 1, 0);
+    rotateArb(radians(yawDeg), 0, 1, 0);
   
-    draw();
+    drawBasic();
     
     translate(0, 180, 0); // draw the arrow slightly above the sailboat
     windDirection.draw();
@@ -100,6 +110,8 @@ public class Sailboat
   
   void setWindDirection(float angleDeg)
   {
+    windAngleDeg = angleDeg;
+    
     float angleRad = radians(angleDeg);
   
     // we want a vector in the X-Z plane, which points in the -Z direction for 
@@ -112,8 +124,51 @@ public class Sailboat
     windDirection.setVector(vector);
   }
   
+  float getRealSailAngle()
+  {
+    // see notes on sailAngleDeg - here, we calculate the "real" sail angle, 
+    // based on wind direction
+    float windAngleDegMod = windAngleDeg % 360;
+    if (windAngleDegMod >= 0 && windAngleDegMod < 180) // math is TBD
+    {
+      // port tack - sail should go out to the starboard side
+      return sailAngleDeg;
+    }
+    else
+    {
+      // starboard tack - sail should go out to the port side
+      return -sailAngleDeg;
+    }
+  }
+  
+  void setRPY(float rollDeg, float pitchDeg, float yawDeg)
+  {
+    this.rollDeg = rollDeg;
+    this.pitchDeg = pitchDeg;
+    this.yawDeg = yawDeg;
+  }
+  
   void setRudderAngle(float rudderAngleDeg)
   {
-    this.rudderAngleDeg = rudderAngleDeg;
+    if (rudderAngleDeg >= -90 && rudderAngleDeg <= 90)
+    {
+      this.rudderAngleDeg = rudderAngleDeg;
+    }
+    else
+    {
+      println("Sailboat: Bad rudder angle set:" + rudderAngleDeg);
+    }
+  }
+  
+  void setSailAngle(float sailAngleDeg)
+  {
+    if (sailAngleDeg >= 0 && sailAngleDeg <= 90)
+    {
+      this.sailAngleDeg = sailAngleDeg;
+    }
+    else
+    {
+      println("Sailboat: Bad sail angle set:" + sailAngleDeg);
+    }
   }
 }

@@ -34,7 +34,7 @@ public class HUD
   void draw()
   {
     int border = 10;
-    int w = 200;
+    int w = 225;
     int h = 50;
     int x, y;
     color c;

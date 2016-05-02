@@ -20,7 +20,7 @@ public abstract class SerialParser
   public float rollDeg;
   public float pitchDeg;
   public float yawDeg;
-  public float windDirectionDeg;
+  public float windAngleDeg;
   public float rudderAngleDeg;
   public float sailAngleDeg;
 
