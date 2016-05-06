@@ -1,9 +1,9 @@
 /*
- * MatrixUtils
+ * CommonUtils
  *
  * (c) 2016 Brian Dolan, RoboSail
  *
- * This file contains miscellaneous helper functions for matrix math.
+ * This file contains miscellaneous helper functions for matrix math and angles.
  */
 import processing.opengl.*;
 
@@ -57,4 +57,12 @@ void rotateArb(float r, float x, float y, float z)
     m[1][0], m[1][1], m[1][2], 0, 
     m[2][0], m[2][1], m[2][2], 0, 
     0, 0, 0, 1);
-} 
+}
+
+// this function takes an angle expressed in degrees and "normalizes" it so that
+// it falls in the range of -180 to +180
+float normalizeAngle(float angleDeg)
+{
+  return ((angleDeg + 180) % 360) - 180;
+}
+

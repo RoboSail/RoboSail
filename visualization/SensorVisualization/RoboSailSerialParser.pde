@@ -56,7 +56,7 @@ public class RoboSailSerialParser extends SerialParser
             }
             else if (variable == "sail angle out")
             {
-              sailAngleDeg = value;
+              sailAngleLimitDeg = value;
             }
             else if (variable == "roll")
             {

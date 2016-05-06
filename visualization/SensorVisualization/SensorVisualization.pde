@@ -11,17 +11,29 @@
  * It reads the values through the serial port, and is made to work with the RoboSail Arduino
  * programs.  It is intended to be used a tool to aid in writing and debugging code on the RoboSail
  * Arduino processor.
+ *
+ * Angles of the rudder, sail, and wind sensor on the sailboat are expressed like this:
+ *
+ *            (overhead view)
+ *                   /                    ^ 90 degrees
+ *            ,,----/-------/             |
+ *      bow  <     +      + |  stern      +----> 0 degrees
+ *            ``------------+             |
+ *                                        v -90 degrees
  */
 // TODO: better-looking boat
-//       clean up Camera class - camera() vs. perspective() approach
-//       support for Processing 3: textMode(SCREEN), water transparency
-//
+//       support for Processing 3: textMode(SCREEN), water transparency, axes labelling
+//       2D overhead view of angles?
+//       read in from recorded file? support for data via ZigBee?
+//       show GPS coordinates
+//       animate location of sailboat based on GPS coordinates, show historical path
+//       show compass direction?
 import processing.serial.*;
 import processing.opengl.*;
 
 ////////////////////////////////////////
 // change this as appropriate:
-String comPort = "COM1";
+String comPort = "COM7";
 ////////////////////////////////////////
 
 SerialParser serialParser;
@@ -37,8 +49,8 @@ void setup()
 {
   size(1024, 768, P3D);
 
-  //serialParser = new JoypadSerialParser(this, comPort); // for debugging/writing without equipment
-  serialParser = new RoboSailSerialParser(this, comPort); // must be after size()
+  serialParser = new JoypadSerialParser(this, comPort); // for debugging/writing without equipment
+  //serialParser = new RoboSailSerialParser(this, comPort); // must be after size()
   axes = new Axes(300, 200, 300);
   sailboat = new Sailboat(new PVector(150, 0, 150));
   water = new Extrusion(axes.xMax, axes.zMax);
@@ -58,7 +70,7 @@ void draw()
   axes.draw();
   water.draw();
   updateSailboatParameters();
-  sailboat.draw();
+  sailboat.draw();  
   drawHUD();
 }
 
@@ -66,25 +78,18 @@ void updateSailboatParameters()
 {
   sailboat.setWindDirection(serialParser.windAngleDeg);
   sailboat.setRudderAngle(serialParser.rudderAngleDeg);
-  sailboat.setSailAngle(serialParser.sailAngleDeg);
+  sailboat.setSailAngleLimit(serialParser.sailAngleLimitDeg);
   sailboat.setRPY(serialParser.rollDeg, serialParser.pitchDeg, serialParser.yawDeg);
 
-  //debugTests();
+  debugTests();
 }
 
-//void debugTests()
-//{
-//  serialParser.sailAngleDeg = 45;
-//
-//  serialParser.windAngleDeg++;
-//  serialParser.windAngleDeg = ((serialParser.windAngleDeg + 180) % 360) - 180;
-//
-//  serialParser.sailAngleDeg++;
-//  serialParser.sailAngleDeg %= 90;
-//
-//  serialParser.rudderAngleDeg++;
-//  serialParser.rudderAngleDeg = ((serialParser.rudderAngleDeg + 180) % 360) - 180;
-//}
+void debugTests()
+{
+  serialParser.sailAngleLimitDeg = 45;
+  serialParser.windAngleDeg = normalizeAngle(serialParser.windAngleDeg + 1);
+  serialParser.rudderAngleDeg = normalizeAngle(serialParser.rudderAngleDeg + 1);
+}
 
 void serialEvent(Serial sPort)
 {
@@ -103,8 +108,10 @@ void drawHUD()
   hud.add("Roll", serialParser.rollDeg, deg);
   hud.add("Pitch", serialParser.pitchDeg, deg);
   hud.add("Yaw", serialParser.yawDeg, deg);
-  hud.add("Wind ang.", serialParser.windAngleDeg, deg);
-  hud.add("Rudder ang.", serialParser.rudderAngleDeg, deg);
-  hud.add("Sail ang.", serialParser.sailAngleDeg, deg);
+  hud.add("Wind", serialParser.windAngleDeg, deg);
+  hud.add("Rudder", serialParser.rudderAngleDeg, deg);
+  hud.add("Sail limit", serialParser.sailAngleLimitDeg, deg);
+  hud.add("X", sailboat.location.x, "");
+  hud.add("Z", sailboat.location.z, "");
   hud.draw();
 }

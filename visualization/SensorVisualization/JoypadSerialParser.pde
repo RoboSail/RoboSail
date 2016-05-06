@@ -61,8 +61,8 @@ public class JoypadSerialParser extends SerialParser
     }
       
     // map the joystick values to a given number of degrees around the circle
-    rollDeg = mapJoyInput(joyInputX, -180, 180);
-    pitchDeg = mapJoyInput(joyInputY, -180, 180);
+    rollDeg = mapJoyInput(joyInputX, -90, 90);
+    pitchDeg = mapJoyInput(joyInputY, -90, 90);
     yawDeg = 0;
     
     handleButtonInputs(buttons);

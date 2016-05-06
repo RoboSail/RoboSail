@@ -22,7 +22,7 @@ public abstract class SerialParser
   public float yawDeg;
   public float windAngleDeg;
   public float rudderAngleDeg;
-  public float sailAngleDeg;
+  public float sailAngleLimitDeg;
 
   SerialParser(PApplet parent, String comPort)
   {

@@ -33,6 +33,7 @@ public class HUD
 
   void draw()
   {
+    String textString;
     int border = 10;
     int w = 225;
     int h = 50;
@@ -61,7 +62,10 @@ public class HUD
       //fill(c);
       
       LabelledValue v = labelledValues.get(i);
-      text(v.label + " (" + v.units + "): " + String.format("%.2f", v.value), x + border, y + 25);
+      textString = v.label;
+      if (v.units != "") textString += " (" + v.units + ")";
+      textString += ": " + String.format("%.2f", v.value);
+      text(textString, x + border, y + 25);
       
       y += h;
     }

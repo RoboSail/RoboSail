@@ -18,7 +18,7 @@ public class Sailboat
   // should be between 0 and 90 degrees, as the client only really knows how far the 
   // the sheet has been let out - within this class, we will calculate the "real" 
   // sail angle, based on the wind direction
-  private float sailAngleDeg;
+  private float sailAngleLimitDeg;
   private float rollDeg;
   private float pitchDeg;
   private float yawDeg;
@@ -34,17 +34,53 @@ public class Sailboat
   // draws a sailboat model with origin at the center of the hull
   void drawBasic()
   {
-    float sailHeight = 30;
-    float hullHeight = 10;
-    float rudderHeight = 20;
-    TruncCone truncCone = new TruncCone();
-  
+    pushStyle();
     noStroke();
-    
     pushMatrix();
     scale(4, 4, 4);
+    drawHull();
+    drawSail();
+    drawRudder();
+    popMatrix();
+    popStyle();
+  }
   
-    // draw the hull
+  void drawSail()
+  {
+    float sailHeight = 30;
+    float sailAngleDeg = getRealSailAngle();
+    TruncCone truncCone = new TruncCone();
+
+    pushStyle();
+    if (sailAngleDeg == windAngleDeg)
+    {
+      // the sail is luffing - tint red
+      fill(color(255, 180, 180));
+    }
+    else
+    {
+      // not luffing - show white
+      fill(color(240, 240, 240));
+    }
+    pushMatrix();
+    translate(0, 8, 0);
+    
+    // rotate by the sail angle
+    translate(0, 0, 15);
+    rotateY(radians(getRealSailAngle())); 
+    translate(0, 0, -15);
+    
+    scale(0.2, 1, 1.8); // squish the shape into a sail
+    truncCone.draw(0, 10, sailHeight, 16);
+    popMatrix();
+    popStyle();
+  }
+  
+  void drawHull()
+  {
+    float hullHeight = 10;
+    TruncCone truncCone = new TruncCone();
+
     pushStyle();
     fill(color(220, 120, 0));
     pushMatrix();
@@ -53,35 +89,29 @@ public class Sailboat
     truncCone.draw(5, 3, hullHeight, 16);  
     popMatrix();
     popStyle();
+  }
   
-    // draw the sail
-    pushStyle();
-    fill(color(240, 240, 240));
-    pushMatrix();
-    translate(0, hullHeight/2 + hullHeight/3, 0);
-    translate(0, 0, 15);
-    rotateY(radians(getRealSailAngle())); // rotate by the sail angle
-    translate(0, 0, -15);
-    scale(0.2, 1, 1.8); // squish the shape into a sail
-    truncCone.draw(0, 10, sailHeight, 16);
-    popMatrix();
-    popStyle();
-    
-    // draw the rudder
+  void drawRudder()
+  {
+    float rudderHeight = 20;
+    TruncCone truncCone = new TruncCone();
+
     pushStyle();
     fill(color(240, 240, 0));
     pushMatrix();
     translate(0, -rudderHeight, -20);
+    
+    // rotate by the rudder angle
     translate(0, 0, 5);
-    rotateY(radians(rudderAngleDeg)); // rotate by the rudder angle
+    rotateY(radians(rudderAngleDeg));
     translate(0, 0, -5);
+    
     scale(0.1, 1, 0.4); // squish the shape into a rudder
     truncCone.draw(10, 5, rudderHeight, 16);
     popMatrix();
     popStyle();
-      
-    popMatrix();
   }
+  
   
   // draw the sailboat, accounting for location, roll/pitch/yaw, and wind arrow
   void draw()
@@ -124,20 +154,23 @@ public class Sailboat
     windDirection.setVector(vector);
   }
   
+  // see notes on sailAngleDeg - here, we calculate the "real" sail angle, 
+  // based on wind direction
   float getRealSailAngle()
   {
-    // see notes on sailAngleDeg - here, we calculate the "real" sail angle, 
-    // based on wind direction
-    float windAngleDegMod = windAngleDeg % 360;
-    if (windAngleDegMod >= 0 && windAngleDegMod < 180) // math is TBD
+    // get the wind angle in the range of -180 to 180
+    float windAngleDegMod = normalizeAngle(windAngleDeg);
+    if (windAngleDegMod >= 0)
     {
-      // port tack - sail should go out to the starboard side
-      return sailAngleDeg;
+      // port tack - sail should go out to the starboard side (positive angle)
+      // also, limit the sail to the angle of the wind
+      return (windAngleDegMod < sailAngleLimitDeg) ? windAngleDegMod : sailAngleLimitDeg;
     }
     else
     {
-      // starboard tack - sail should go out to the port side
-      return -sailAngleDeg;
+      // starboard tack - sail should go out to the port side (negative angle)
+      // also, limit the sail to the angle of the wind
+      return (windAngleDegMod > -sailAngleLimitDeg) ? windAngleDegMod : -sailAngleLimitDeg;
     }
   }
   
@@ -156,19 +189,19 @@ public class Sailboat
     }
     else
     {
-      println("Sailboat: Bad rudder angle set:" + rudderAngleDeg);
+      println("Sailboat: Bad rudder angle set: " + rudderAngleDeg);
     }
   }
   
-  void setSailAngle(float sailAngleDeg)
+  void setSailAngleLimit(float sailAngleLimitDeg)
   {
-    if (sailAngleDeg >= 0 && sailAngleDeg <= 90)
+    if (sailAngleLimitDeg >= 0 && sailAngleLimitDeg <= 90)
     {
-      this.sailAngleDeg = sailAngleDeg;
+      this.sailAngleLimitDeg = sailAngleLimitDeg;
     }
     else
     {
-      println("Sailboat: Bad sail angle set:" + sailAngleDeg);
+      println("Sailboat: Bad sail angle limit set: " + sailAngleLimitDeg);
     }
   }
 }
