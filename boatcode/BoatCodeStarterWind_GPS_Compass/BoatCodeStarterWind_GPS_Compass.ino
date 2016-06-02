@@ -150,29 +150,29 @@ void loop() {
 // Function to Print out all values for debug.
 void printToMonitor()
 {
-  Serial.print("wind angle: ");
+  Serial.print("Wind Angle: ");
   Serial.print(windAngle);
  
-  Serial.print(", rudder from RC: ");
+  Serial.print("  Rudder, from RC: ");
   Serial.print(rudderPulseWidth);
-  Serial.print(", rudder angle out: ");
+  Serial.print("  angle out: ");
   Serial.print(rudderServoOut);
 
-  Serial.print(", sail from RC: ");
+  Serial.print("\t Sail, from RC: ");
   Serial.print(sailPulseWidth);
-  Serial.print(", sail angle out: ");
+  Serial.print("  angle out: ");
   Serial.print(sailServoOut);
 
   Serial.print("\n"); // Print a new line
-  Serial.print("GPS fix: "); Serial.print(GPSfix);
-  Serial.print(", quality: "); Serial.print(GPSqual);
-  Serial.print(", satellites: "); Serial.println(GPSsat);
-  Serial.print("x: "); Serial.print(relPositionX);
-  Serial.print(", y: "); Serial.print(relPositionY);
-  Serial.print(", angle from start: "); Serial.println(angleFromStart);
+  Serial.print("Fix: "); Serial.print(GPSfix);
+  Serial.print(" quality: "); Serial.print(GPSqual);
+  Serial.print(" satellites: "); Serial.println(GPSsat);
+  Serial.print("x = "); Serial.print(relPositionX);
+  Serial.print("   y = "); Serial.print(relPositionY);
+  Serial.print("  angle from start = "); Serial.println(angleFromStart);
       
-  Serial.print("roll: "); Serial.print(robosailRoll);
-  Serial.print(", heading: "); Serial.println(robosailHeading);
+  Serial.print("Roll: "); Serial.print(robosailRoll);
+  Serial.print(",              Heading: "); Serial.println(robosailHeading);
   Serial.println();
 }
 
