@@ -12,11 +12,12 @@ void declarePins()
 
 
 /*********Functions to read RC Transmitter/Receiver and Sensors *****/
- // Takes in the PWM signals from the RC Receiver and translate
- // them to the servo positions in degrees.
- // Takes in the PWM signals from the WindSensor and translate 
- // it to the windvane position in degrees.
- void readReceiverSensors()
+
+
+ 
+ void readReceiver()
+        // Takes in the PWM signals from the RC Receiver and translates
+        // translates them to the servo positions in degrees.
  {
   // Read the command pulse from the RC receiver
   rudderPulseWidth = pulseIn(RUDDER_RC_PIN, HIGH);
@@ -24,7 +25,12 @@ void declarePins()
   // Calculate the servo position in degrees.
   rudderPosition = map(rudderPulseWidth, RUDDER_LOW, RUDDER_HIGH, -60, 60);
   sailPosition = map(sailPulseWidth, SAIL_LOW, SAIL_HIGH, 0, 90);
-  
+ }
+ 
+ void readWind()
+        // Takes in the PWM signals from the WindSensor and translate 
+        // it to the windvane position in degrees.
+ {
   // Read values from the WindSensor
   windPulseWidth = pulseIn(WIND_PIN, HIGH);
   // Convert the wind angle to degrees from PWM.  Range -180 to +180

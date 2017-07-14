@@ -23,9 +23,11 @@ the module.
 
 // These values will need to be adjusted based on your particular compass.
 // Use compassCalibration.ino to determine the correct hard iron calibration.
-float hardiron_x = -11.91;
-float hardiron_y = 5.05;
-float hardiron_z = -1.02;
+// 8/1/16 DB Hard iron calibration for X: 28.77 for Y: -9.05 for Z: -25.20
+
+float hardiron_x = 28.77;
+float hardiron_y = -9.05;
+float hardiron_z = -25.20;
 
 /* Assign a unique ID to this sensor at the same time */
 Adafruit_LSM303_Mag_Unified mag = Adafruit_LSM303_Mag_Unified(12345);

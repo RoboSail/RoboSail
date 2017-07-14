@@ -1,4 +1,4 @@
-/* BoatCodeStarterWind_Accel rev 4/22/2016
+/* BoatCodeStarterWind_Accel rev 7/31/2016
 © 2014-2016 RoboSail
 Find detailed description in Decription tab
 */

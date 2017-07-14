@@ -1,4 +1,4 @@
-/* CompassTest rev 7/22/2015 IN PROCESS
+/* CompassTest rev 7/31/2016
 © 2014-2016 RoboSail
 */
 
@@ -11,6 +11,7 @@
 // Use compassCalibration to determine the correct hard iron calibration.
 // Data from 7/26/15 Hard iron calibration for X: -1.59 for Y: -7.18 for Z: 34.44
 //Data from 7/29 BLI Hard iron calibration for X: -8.41 for Y: -8.00 for Z: 33.32
+
 float hardiron_x = -8.41;
 float hardiron_y = -8.00;
 float hardiron_z = 33.32;
@@ -35,11 +36,13 @@ void setup() {
   /* Wait for the sensor to initialize  */
     if(!mag.begin() || !accel.begin()) sensorGood = false;
     else sensorGood = true;
-  //  if (accel.begin()) { sensorGood = true; } //hanging up here
+ 
   while (sensorGood == false) 
   {
    Serial.println("no LSM303 detected ... Check the wiring");
     delay(2000); // wait and try again
+    if(!mag.begin() || !accel.begin()) sensorGood = false;
+    else sensorGood = true;
   }
   initialDisplay();
 
@@ -50,7 +53,7 @@ void setup() {
 void loop() {
   // Get a compass reading
   compass.calculate(roll, pitch, yaw, heading);
-  robosailHeading = (360 - heading) + 90;   //change crom standard compass reading to RoboSail frame of ref
+  robosailHeading = (360 - heading) + 90;   //change from standard compass reading to RoboSail frame of ref
   if (robosailHeading >= 360) {robosailHeading -= 360;}
 
   displayToScreen();

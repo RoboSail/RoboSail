@@ -36,9 +36,11 @@ This code uses the orientation.cpp library where the calculations are done.
 //float hardiron_y = 5.05;
 //float hardiron_z = -1.02;
 //Data from 7/29 BLI Hard iron calibration for X: -8.41 for Y: -8.00 for Z: 33.32
-float hardiron_x = -8.41;
-float hardiron_y = -8.00;
-float hardiron_z = 33.32;
+// 8/1/16 DB Hard iron calibration for X: 28.77 for Y: -9.05 for Z: -25.20
+
+float hardiron_x = 28.77;
+float hardiron_y = -9.05;
+float hardiron_z = -25.20;
 // Source: http://www.ngdc.noaa.gov/geomag-web/#igrfwmm
 float declination = -14.6067;
 

@@ -18,7 +18,8 @@ void setup() {
 
 void loop() {
 //*********** Read in data from the RC receiver and sensors *********
-readReceiverSensors();
+readReceiver();
+readWind();
 
 // You now have values from the RC Receiver and Sensors in these variable: 
 // rudderPosition, sailPosition, and windAngle
