@@ -1,8 +1,8 @@
-/* BoatCodeStarterWind+GPS+Accel rev 7/31/2016
-© 2014-2016 RoboSail
+/* BoatCodeStarterWind+GPS+Accel rev 7/31/2017
+© 2014-2017 RoboSail
 Full description under Description tab */
 
-boolean verbose = true;  //true calls function for values to be printed to monitor
+boolean displayValues = true;  //true calls function for values to be printed to monitor
 
 #include <Servo.h>
 #include <Adafruit_GPS.h>
@@ -17,7 +17,6 @@ boolean verbose = true;  //true calls function for values to be printed to monit
 Adafruit_GPS GPS(&Serial1);
 // initialize utility that will convert lat/lon to (x,y) positions in meters
 UsefulCalcs calc(false);
-
 
 
 void setup() {
@@ -57,7 +56,7 @@ void loop() {
   driveSailServo(sailPosition);
   driveRudderServo(rudderPosition);
   
-  if (verbose) {printToMonitor();} 
+  if (displayValues) {printToMonitor();} 
   
 } //end of loop()
 

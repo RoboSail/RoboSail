@@ -81,19 +81,19 @@ void printToMonitor()
   Serial.print("Wind Angle: ");
   Serial.print(windAngle);
  
-  Serial.print("  Rudder, RC: ");
-  Serial.print(rudderPulseWidth);
-   Serial.print("  desired angle: ");
-  Serial.print(rudderPosition);
-  Serial.print("  to servo: ");
-  Serial.print(rudderServoOut);
-
   Serial.print("     Sail, RC: ");
   Serial.print(sailPulseWidth);
   Serial.print("  desired angle: ");
   Serial.print(sailPosition);
   Serial.print("  to servo: ");
   Serial.print(sailServoOut);
+  
+  Serial.print("  Rudder, RC: ");
+  Serial.print(rudderPulseWidth);
+   Serial.print("  desired angle: ");
+  Serial.print(rudderPosition);
+  Serial.print("  to servo: ");
+  Serial.print(rudderServoOut);
 
   Serial.print("\n"); // Print a new line
 }

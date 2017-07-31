@@ -1,5 +1,5 @@
-/* RudderServoTest rev 3/28/2016
-   © 2014-2016 RoboSail
+/* RudderServoTest rev 7/30/2017
+   © 2014-2017 RoboSail
    Test the various rudder positions available by driving the
    rudder servo to positons entered by the user.
    The user types in the desired angle through the Serial Monitor.
@@ -12,8 +12,7 @@
    */
 
 #include <Servo.h>
-
-const int RUDDER_SERVO_PIN = 8;
+#define RUDDER_SERVO_PIN 8  // declare pin for rudder servo
 Servo rudderServo;  // define servo 
 
 // variable to store the servo position

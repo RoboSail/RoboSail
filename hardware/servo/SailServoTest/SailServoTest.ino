@@ -1,5 +1,5 @@
-/* SailServoTest rev 3/28/2016
-   © 2014-2016 RoboSail
+/* SailServoTest rev 7/30/2017
+   © 2014-2017 RoboSail
    Test the various sail positions available by driving the
    sail servo to positons entered by the user.
    The user types in the desired angle through the Serial Monitor.
@@ -14,8 +14,7 @@
 */
 
 #include <Servo.h>
-
-const int SAIL_SERVO_PIN = 9;
+#define SAIL_SERVO_PIN 9  // declare pin for sail servo
 Servo sailServo;    // define servo 
 
 // variable to store the servo position

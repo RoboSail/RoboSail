@@ -4,7 +4,7 @@
 #include <Servo.h>
 
 // Pin assignments
-const int SERVO_PIN = 7;
+#define SERVO_PIN 7  // declare pin for servo
 
 Servo Servo1;
 

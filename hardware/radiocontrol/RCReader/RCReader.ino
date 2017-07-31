@@ -1,6 +1,6 @@
-/* RCReader rev 3/28/2016
-© 2014-2016 RoboSail
-This program puts the Arduino micro-computer in the RC (Radio Control)system 
+/* RCReader rev rev 7/30/2017
+© 2014-2017 RoboSail
+This program puts the Arduino micro-computer in the RC (Radio Control) system 
 It takes in the control signals coming in from the Receiver and 
 displays the following to the Serial Monitor:
   - The actual "pulse" coming in from the receiver for each channel
@@ -20,16 +20,13 @@ digital pins 2 and 3 respectively.
 
 // Pin assignments
 //input pins from receiver
-const int RUDDER_RC_PIN = 2;
-const int SAIL_RC_PIN = 3;
+#define RUDDER_RC_PIN 2
+#define SAIL_RC_PIN 3
 
 // variables to hold input values
 int rudderPulseWidth;
 int sailPulseWidth;
 
-//create servo objects
-Servo rudderServo;
-Servo sailServo;
 
 void setup() {
   Serial.begin(115200);
@@ -42,15 +39,15 @@ void setup() {
 void loop() {
   // Read commanded (manual) values from the RC reciever
   // pulseIn returns the width of the command pulse in microseconds.
-  rudderPulseWidth = pulseIn(RUDDER_RC_PIN, HIGH);
   sailPulseWidth = pulseIn(SAIL_RC_PIN, HIGH);
- 
+  rudderPulseWidth = pulseIn(RUDDER_RC_PIN, HIGH);
+
   // Print out the values for debug.
-  Serial.print("Rudder pulse from receiver: ");
-  Serial.print(rudderPulseWidth);
+  Serial.print("Sail pulse from receiver: ");
+  Serial.print(sailPulseWidth);
   
-  Serial.print("\t\t Sail pulse from receiver: ");
-  Serial.println(sailPulseWidth);
+  Serial.print("\t\t Rudder pulse from receiver: ");
+  Serial.println(rudderPulseWidth);
   
 }
 

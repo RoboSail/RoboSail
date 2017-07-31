@@ -1,5 +1,5 @@
-/* BoatCodeStarterWind_Accel rev 7/31/2016
-© 2014-2016 RoboSail
+/* BoatCodeStarterWind_Accel rev 7/31/2017
+© 2014-2017 RoboSail
 Find detailed description in Decription tab
 */
 
@@ -9,7 +9,7 @@ Find detailed description in Decription tab
 #include <Adafruit_LSM303_U.h>
 #include "RoboSail.h"
 //Fill in min/max parameters for the RC Receiver and WindSensor in RoboSail.h tab
-boolean verbose = true;  //true calls function for values to be printed to monitor
+boolean displayValues = true;  //true calls function for values to be printed to monitor
 
 
 void setup() {
@@ -41,7 +41,7 @@ readAccel();
   driveSailServo(sailPosition);
   driveRudderServo(rudderPosition);
   
-  if (verbose) {printToMonitor();}
+  if (displayValues) {printToMonitor();}
   
 } //end of loop()
 

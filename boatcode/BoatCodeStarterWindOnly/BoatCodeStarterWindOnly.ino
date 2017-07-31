@@ -1,11 +1,10 @@
-/* BoatCodeStarterWindOnly rev 4/8/2016
-© 2014-2016 RoboSail
+/* BoatCodeStarterWindOnly rev 7/31/2017
+© 2014-2017 RoboSail
 Find detailed description in Decription tab
 */
-
 #include <Servo.h>
 #include "RoboSail.h"
-boolean verbose = true;  //true calls function for values to be printed to monitor
+boolean displayValues = true;  //true calls function for values to be printed to monitor
 
 //Fill in min/max parameters for the RC Receiver and WindSensor in RoboSail.h tab
 
@@ -36,7 +35,7 @@ readWind();
   driveSailServo(sailPosition);
   driveRudderServo(rudderPosition);
   
-  if (verbose) {printToMonitor();}
+  if (displayValues) {printToMonitor();}
   
 } //end of loop()
 

@@ -1,5 +1,5 @@
 RadioControl test README file
-© 2014-2016 RoboSail
+© 2014-2017 RoboSail
 The 2-channel RadioControl (RC) Transmitter/Receiver pair come with the sailboat.
 The signals are originally used to directly control the servos. When the RoboSail 
 control system is installed, the signals from the Receiver are routed through the
