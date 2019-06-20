@@ -67,7 +67,7 @@ public class Sailboat
     
     // rotate by the sail angle
     translate(0, 0, 15);
-    rotateY(radians(getRealSailAngle())); 
+    rotateY(radians(sailAngleDeg)); 
     translate(0, 0, -15);
     
     scale(0.2, 1, 1.8); // squish the shape into a sail
