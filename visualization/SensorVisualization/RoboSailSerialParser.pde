@@ -18,10 +18,15 @@ public class RoboSailSerialParser extends SerialParser
   // parse the serial output, in the format of the Arduino program's output, which is
   // int the format:
   // 
-  // [joystick x value (0-1023)] [joystick y value (0-1023)] [B1][B2][B3][B4][B5]
+  // [wind angle:(wind angle)]
+  // [rudder angle out:(rudder angle)]
+  // [sail angle out:(maximum sail angle)]
+  // [roll:(roll)]
+  // [pitch:(pitch)]
+  // [yaw:(yaw)] 
   //
-  // where B1-B1 are 0 or 1 values representing the state of the 5 buttons 
-  // 
+  // (all angles expressed in degrees)
+  //
   // this function must be "hooked up" to the global serialEvent() function by the main 
   // application, e.g. 
   // void serialEvent(Serial sPort) { serialParser.serialEvent(sPort); }
